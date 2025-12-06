@@ -8,6 +8,12 @@ const API_URL = "https://sheetdb.io/api/v1/7ev7dpmgzl9uh";
 const mempelai = {
   pria: "Imron",
   wanita: "Dewi",
+  lengkapPria: "Muhammad Imron",
+  lengkapWanita: "Sri Dewi Lestari",
+  ayahPria: "Mokhamad Bahrun Triyono",
+  ibuPria: "Sri Kamtinah",
+  ayahWanita: "Montague",
+  ibuWanita: "Mrs. Montague",
   tanggal: "2026-06-18T09:00:00", // Format: YYYY-MM-DDTHH:mm:ss
 };
 
@@ -177,7 +183,31 @@ const kirimUcapan = async () => {
         — Q.S. Ar-Rum Ayat 21
       </p>
     </section>
-    
+
+    <section class="perkenalan">
+      <h2>Mempelai</h2>
+      <div class="couple-intro-container">
+          
+          <div class="mempelai-card">
+              <img src="/avatar_mempelai_ikhwan.png" alt="Avatar Pria" class="single-avatar">
+              <h3 class="name-title">{{ mempelai.lengkapPria }}</h3>
+              <p class="parent-text">Putra dari:</p>
+              <p class="parent-names">Bapak {{ mempelai.ayahPria }} & Ibu {{ mempelai.ibuPria }}</p>
+          </div>
+
+          <div class="symbol-separator">
+              <span class="heart-symbol">❤️</span>
+          </div>
+
+          <div class="mempelai-card">
+              <img src="/avatar_mempelai_akhwat.png" alt="Avatar Wanita" class="single-avatar">
+              <h3 class="name-title">{{ mempelai.lengkapWanita }}</h3>
+              <p class="parent-text">Putri dari:</p>
+              <p class="parent-names">Bapak {{ mempelai.ayahWanita }} & Ibu {{ mempelai.ibuWanita }}</p>
+          </div>
+      </div>
+    </section>
+
     <section class="countdown-section">
       <h2>Menuju Halal</h2>
       <div class="timer-box">
@@ -412,6 +442,67 @@ h2 {
   background-color: #a45a1e;
 }
 
+/* === STYLE BARU: PERKENALAN MEMPELAI === */
+.perkenalan {
+  padding: 50px 20px;
+  background-color: var(--bg-color); /* Warna latar berbeda */
+}
+
+.couple-intro-container {
+  display: flex;
+  flex-direction: column; /* Default: tumpuk vertikal di HP */
+  align-items: center;
+  gap: 30px; /* Jarak antara card di HP */
+}
+
+.mempelai-card {
+  text-align: center;
+  width: 100%;
+}
+
+.single-avatar {
+  width: 120px; 
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--primary-color);
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.name-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin: 0 0 5px 0;
+}
+
+.parent-text {
+  font-size: 0.9rem;
+  color: #777;
+  margin: 0;
+}
+
+.parent-names {
+  font-weight: bold;
+  color: var(--text-color);
+  margin-top: 5px;
+}
+
+/* Simbol Romantis (Heart) */
+.symbol-separator {
+  /* Di HP, hanya berfungsi sebagai penampung Jantung */
+  width: 100%;
+  margin: 10px 0;
+}
+
+.heart-symbol {
+  font-size: 2.5rem;
+  color: #d4a373; /* Warna Emas */
+  display: block;
+  text-align: center;
+}
+
 /* --- MAP --- */
 .map-container {
   border-radius: 10px;
@@ -545,9 +636,41 @@ footer {
     font-size: 1.1rem;
   }
 
+  .couple-intro-container {
+    justify-content: space-around;
+    gap: 0;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .single-avatar {
+    width: 200px;
+    height: 200px;
+  }
+
+  .mempelai-card {
+    width: 100%; /* Memastikan kartu mengambil lebar penuh container 400px */
+  }
+
+  /* Simbol Romantis di Laptop */
+  .symbol-separator {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    margin: 20px 0;
+  }
+  
+  .heart-symbol {
+    font-size: 3.5rem; /* Perbesar sedikit */
+  }
+
   /* Perbesar ukuran font di layar laptop agar lebih nyaman */
   .title {
     font-size: 4.5rem;
+  }
+  .sub-title {
+    font-size: 0.5rem;
   }
   .time-item {
     min-width: 70px;

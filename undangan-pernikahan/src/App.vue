@@ -307,7 +307,7 @@ h2 {
 }
 .title {
   font-family: "Great Vibes", cursive;
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   color: #bc6c25;
   margin: 10px 0;
   line-height: 1.2;

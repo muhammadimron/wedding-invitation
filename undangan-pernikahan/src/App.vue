@@ -156,13 +156,26 @@ const kirimUcapan = async () => {
     <section class="hero">
       <p class="sub-title">The Wedding of</p>
       <h1 class="title">{{ mempelai.pria }} & {{ mempelai.wanita }}</h1>
-
       <img 
         src="/avatar_hero.png" 
         alt="Mempelai Pria dan Wanita Berpegangan Tangan" 
         class="full-frame-avatar"
       >
+    </section>
 
+    <section class="quran-quote">
+      <p class="taawwudh-text">
+        أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ
+      </p>
+      <p class="arab-text">
+        وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
+      </p>
+      <p class="terjemahan">
+        "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."
+      </p>
+      <p class="sumber">
+        — Q.S. Ar-Rum Ayat 21
+      </p>
     </section>
     
     <section class="countdown-section">
@@ -308,6 +321,49 @@ h2 {
   margin: 20px auto;
   display: block;
   border-radius: 8px; /* Sudut sedikit membulat */
+}
+
+
+/* --- STYLE UNTUK TA'AWWUDH --- */
+.quran-quote {
+  padding: 30px 20px;
+  background-color: var(--white);
+  font-family: 'Times New Roman', serif;
+}
+
+.taawwudh-text {
+  font-family: 'Scheherazade New', serif; 
+  font-size: 1rem; /* Lebih kecil dari ayat utama */
+  margin-bottom: 10px;
+  color: #555; /* Warna agak lebih lembut */
+  direction: rtl; 
+  text-align: center;
+}
+
+.arab-text {
+  font-family: 'Scheherazade New', serif;
+  font-size: 1.2rem;
+  line-height: 2;
+  margin-bottom: 20px;
+  color: #333;
+  direction: rtl; 
+  text-align: center;
+}
+
+.terjemahan {
+  font-size: 1rem;
+  font-style: italic;
+  color: #777;
+  max-width: 450px;
+  margin: 0 auto 15px auto;
+  line-height: 1.6;
+}
+
+.sumber {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-top: 5px;
 }
 
 /* --- COUNTDOWN --- */
@@ -475,6 +531,18 @@ footer {
 
   .and-symbol {
     font-size: 4rem;
+  }
+
+  .taawwudh-text {
+    font-size: 1rem; 
+  }
+
+  .arab-text {
+    font-size: 1.2rem;
+  }
+
+  .terjemahan {
+    font-size: 1.1rem;
   }
 
   /* Perbesar ukuran font di layar laptop agar lebih nyaman */

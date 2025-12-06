@@ -15,7 +15,24 @@ const mempelai = {
   ayahWanita: "Montague",
   ibuWanita: "Mrs. Montague",
   tanggal: "2026-06-18T09:00:00", // Format: YYYY-MM-DDTHH:mm:ss
+  akad: {
+    tanggal: "Kamis, 18 Juni 2026", 
+    waktu: "Pukul 09.00 - 10.00 WIB",
+    tempat: "Kediaman Mempelai Akhwat",
+  },
+  resepsi: {
+    tanggal: "Kamis, 18 Juni 2026", 
+    waktu: "Pukul 11.00 - 15.00 WIB",
+    tempat: "Kediaman Mempelai Akhwat",
+  },
+  alamat: {
+    namaTempat: "Kediaman Bpk. Montague",
+    jalan: "Jl. Cinta Abadi No. 12, RT 05/RW 02",
+    kota: "Nanjungjaya, Kec. Kersamanah, Kabupaten Garut, Jawa Barat 44189",
+    gmapsLink: "https://maps.app.goo.gl/H21ue3w9mSJ5tbKS6"
+  }
 };
+
 
 // --- LOGIKA COUNTDOWN ---
 const waktuTersisa = ref({ hari: 0, jam: 0, menit: 0, detik: 0 });
@@ -184,30 +201,6 @@ const kirimUcapan = async () => {
       </p>
     </section>
 
-    <section class="perkenalan">
-      <h2>Mempelai</h2>
-      <div class="couple-intro-container">
-          
-          <div class="mempelai-card">
-              <img src="/avatar_mempelai_ikhwan.png" alt="Avatar Pria" class="single-avatar">
-              <h3 class="name-title">{{ mempelai.lengkapPria }}</h3>
-              <p class="parent-text">Putra dari:</p>
-              <p class="parent-names">Bapak {{ mempelai.ayahPria }} & Ibu {{ mempelai.ibuPria }}</p>
-          </div>
-
-          <div class="symbol-separator">
-              <span class="heart-symbol">❤️</span>
-          </div>
-
-          <div class="mempelai-card">
-              <img src="/avatar_mempelai_akhwat.png" alt="Avatar Wanita" class="single-avatar">
-              <h3 class="name-title">{{ mempelai.lengkapWanita }}</h3>
-              <p class="parent-text">Putri dari:</p>
-              <p class="parent-names">Bapak {{ mempelai.ayahWanita }} & Ibu {{ mempelai.ibuWanita }}</p>
-          </div>
-      </div>
-    </section>
-
     <section class="countdown-section">
       <h2>Menuju Halal</h2>
       <div class="timer-box">
@@ -234,25 +227,70 @@ const kirimUcapan = async () => {
       </button>
     </section>
 
-    <section class="location-section">
-      <h2>Lokasi Acara</h2>
-      <p>Gedung Serbaguna Indah, Jakarta</p>
-      <div class="map-container">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d494.9497663025813!2d108.02528712898494!3d-7.0564159075831006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68cb02a96090e5%3A0x20b36ab157cc9cf!2sRindu%20Tanah%20Suci!5e0!3m2!1sid!2sid!4v1764985338564!5m2!1sid!2sid"
-          width="100%"
-          height="300"
-          style="border: 0"
-          allowfullscreen=""
-          loading="lazy"
-        ></iframe>
+    <section class="perkenalan">
+      <h2>Mempelai</h2>
+      <div class="couple-intro-container">
+          
+          <div class="mempelai-card">
+              <img src="/avatar_mempelai_ikhwan.png" alt="Avatar Pria" class="single-avatar">
+              <h3 class="name-title">{{ mempelai.lengkapPria }}</h3>
+              <p class="parent-text">Putra dari:</p>
+              <p class="parent-names">Bapak {{ mempelai.ayahPria }} & Ibu {{ mempelai.ibuPria }}</p>
+          </div>
+
+          <div class="symbol-separator">
+              <span class="heart-symbol">❤️</span>
+          </div>
+
+          <div class="mempelai-card">
+              <img src="/avatar_mempelai_akhwat.png" alt="Avatar Wanita" class="single-avatar">
+              <h3 class="name-title">{{ mempelai.lengkapWanita }}</h3>
+              <p class="parent-text">Putri dari:</p>
+              <p class="parent-names">Bapak {{ mempelai.ayahWanita }} & Ibu {{ mempelai.ibuWanita }}</p>
+          </div>
       </div>
-      <a
-        href="https://maps.app.goo.gl/H21ue3w9mSJ5tbKS6"
-        target="_blank"
-        class="btn"
-        >Buka di Google Maps</a
-      >
+    </section>
+
+    <section class="event-details">
+        <h2>Waktu dan Tempat</h2>
+
+        <div class="event-card-container">
+            <div class="event-card akad-card">
+                <span class="icon-event">💍</span>
+                <h3>Akad Nikah</h3>
+                <p class="event-date">{{ mempelai.akad.tanggal }}</p>
+                <p class="event-time">{{ mempelai.akad.waktu }}</p>
+                <p class="event-location">{{ mempelai.akad.tempat }}</p>
+            </div>
+
+            <div class="event-card resepsi-card">
+                <span class="icon-event">🎉</span>
+                <h3>Resepsi Pernikahan</h3>
+                <p class="event-date">{{ mempelai.resepsi.tanggal }}</p>
+                <p class="event-time">{{ mempelai.resepsi.waktu }}</p>
+                <p class="event-location">{{ mempelai.resepsi.tempat }}</p>
+            </div>
+        </div>
+        
+        <div class="full-address-block">
+            <h2>Lokasi Acara</h2>
+            <p class="address-name">{{ mempelai.alamat.namaTempat }}</p>
+            <p class="address-detail">{{ mempelai.alamat.jalan }}</p>
+            <p class="address-detail">{{ mempelai.alamat.kota }}</p>
+            <div class="map-container">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d494.9497663025813!2d108.02528712898494!3d-7.0564159075831006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68cb02a96090e5%3A0x20b36ab157cc9cf!2sRindu%20Tanah%20Suci!5e0!3m2!1sid!2sid!4v1764985338564!5m2!1sid!2sid"
+                width="100%"
+                height="300"
+                style="border: 0"
+                allowfullscreen=""
+                loading="lazy"
+              ></iframe>
+            </div>
+            <a :href="mempelai.alamat.gmapsLink" target="_blank" class="btn-maps">
+                Lihat di Google Maps
+            </a>
+        </div>
     </section>
 
     <section class="guestbook-section">
@@ -333,7 +371,7 @@ h2 {
 .sub-title {
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.4rem;
 }
 .title {
   font-family: "Great Vibes", cursive;
@@ -493,7 +531,7 @@ h2 {
 .symbol-separator {
   /* Di HP, hanya berfungsi sebagai penampung Jantung */
   width: 100%;
-  margin: 10px 0;
+  margin: 10px 0 30px 0;
 }
 
 .heart-symbol {
@@ -507,7 +545,8 @@ h2 {
 .map-container {
   border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 .btn {
@@ -600,6 +639,100 @@ footer {
   color: var(--primary-color);
 }
 
+/* === STYLE BARU: EVENT DETAILS SECTION (Waktu dan Tempat) === */
+.event-details {
+  padding: 50px 20px;
+  background-color: var(--white); 
+}
+
+/* Container untuk 2 kartu: Akad dan Resepsi */
+.event-card-container {
+  display: flex;
+  flex-direction: column; /* Tumpuk vertikal di HP */
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.event-card {
+  padding: 25px 15px;
+  border-radius: 12px;
+  background-color: #fef8f0; /* Warna krem muda/putih gading untuk card */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.icon-event {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.event-card h3 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.2rem;
+  color: #bc6c25;
+  margin: 0 0 10px 0;
+}
+
+.event-date {
+  font-weight: bold;
+  color: var(--text-color);
+  margin: 5px 0 0 0;
+}
+
+.event-time {
+  font-style: italic;
+  color: #777;
+  margin: 15px 0 15px 0;
+  font-size: 0.6rem;
+}
+
+.event-location {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0;
+}
+
+/* --- Block Alamat Lengkap --- */
+.full-address-block {
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px dashed #d4a373; /* Garis aksen putus-putus */
+  border-radius: 8px;
+}
+
+.full-address-block h4 {
+  font-size: 1.1rem;
+  color: #bc6c25;
+  margin-top: 0;
+}
+
+.address-detail, .address-name {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 3px 0;
+}
+
+.btn-maps {
+  display: inline-block;
+  background-color: #d4a373;
+  color: white;
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  margin-top: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-maps:hover {
+  background-color: #bc6c25;
+}
+
 /* --- MEDIA QUERY: UNTUK LAYAR BESAR (Tablet/Laptop) --- */
 /* Terapkan batas lebar maksimum hanya pada layar > 600px */
 @media (min-width: 600px) {
@@ -652,6 +785,12 @@ footer {
     width: 100%; /* Memastikan kartu mengambil lebar penuh container 400px */
   }
 
+  .event-card-container {
+    flex-direction: row; 
+    max-width: 550px;
+    margin: 0 auto 40px auto;
+  }
+
   /* Simbol Romantis di Laptop */
   .symbol-separator {
     display: flex; 
@@ -670,7 +809,7 @@ footer {
     font-size: 4.5rem;
   }
   .sub-title {
-    font-size: 0.5rem;
+    font-size: 0.8rem;
   }
   .time-item {
     min-width: 70px;

@@ -30,7 +30,7 @@ const kirimLokal = () => {
 
 <template>
   <section class="guestbook-section">
-    <h2>Kirim Ucapan & Doa</h2>
+    <h2>Ucapkan Sesuatu</h2>
 
     <div class="form-box">
       <input v-model="inputNama" type="text" placeholder="Nama Anda" />
@@ -80,20 +80,20 @@ textarea {
   border-radius: 5px;
   font-family: inherit;
   /* Jaminan latar belakang putih cerah */
-  background-color: var(--white); 
+  background-color: var(--white);
   color: var(--text-color);
   /* Tambahkan transisi untuk efek fokus yang halus */
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease;
 }
 
 /* Style saat field sedang difokuskan/diisi */
 input:focus,
 textarea:focus {
   /* Ganti border menjadi warna tema */
-  border-color: var(--primary-color); 
+  border-color: var(--primary-color);
   outline: none; /* Hapus outline biru/hitam default browser */
   /* Tambahkan bayangan lembut berwarna tema untuk efek "cerah" */
-  box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2); 
+  box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
 }
 .btn-primary {
   background-color: #bc6c25;
@@ -120,13 +120,28 @@ textarea:focus {
 .message-card h4 {
   margin: 0;
   color: #bc6c25;
+  font-size: 1rem;
 }
 .message-card small {
   color: #999;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
 }
 .message-card p {
   margin-top: 5px;
   font-style: italic;
+  font-size: 0.8rem;
+}
+
+/* --- MEDIA QUERY (Revisi untuk GLOBAL) --- */
+@media (min-width: 600px) {
+  .message-card h4 {
+    font-size: 1.2rem;
+  }
+  .message-card small {
+    font-size: 0.8rem;
+  }
+  .message-card p {
+    font-size: 1rem;
+  }
 }
 </style>

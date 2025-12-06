@@ -2,6 +2,8 @@
 import { onMounted, ref } from "vue";
 // IMPORT KOMPONEN BARU
 import LoaderOverlay from "./components/LoaderOverlay.vue";
+import GiftSection from "./components/GiftSection.vue";
+import RSVPSection from "./components/RSVPSection.vue";
 import QuranQuote from "./components/QuranQoute.vue";
 import PerkenalanMempelai from "./components/PerkenalanMempelai.vue";
 import EventDetails from "./components/EventDetails.vue";
@@ -9,6 +11,7 @@ import CountdownSection from "./components/CountdownSection.vue";
 import GuestbookSection from "./components/GuestbookSection.vue";
 
 const API_URL = "https://sheetdb.io/api/v1/7ev7dpmgzl9uh";
+const RSVP_LINK = "https://forms.gle/ContohLinkRSVPAnda";
 
 // --- DATA MEMPELAI & ACARA (GLOBAL DATA) ---
 const mempelai = {
@@ -38,6 +41,12 @@ const mempelai = {
     gmapsLink: "https://maps.app.goo.gl/H21ue3w9mSJ5tbKS6",
     gmapsLinkEmbed:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d494.9497663025813!2d108.02528712898494!3d-7.0564159075831006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68cb02a96090e5%3A0x20b36ab157cc9cf!2sRindu%20Tanah%20Suci!5e0!3m2!1sid!2sid!4v1764985338564!5m2!1sid!2sid",
+  },
+  hadiah: {
+    bank: "BCA Syariah", // Ganti dengan bank Anda
+    rekening: "0092013176", // Ganti dengan nomor rekening Anda
+    atasNama: "Muhammad Imron",
+    opsiLain: "Jl. Masjid Raya No. 5, Nanjungjaya, Kec. Kersamanah, Kabupaten Garut, Jawa Barat 44189 (Kotak Kado)" // Alamat pengiriman fisik
   },
 };
 
@@ -115,7 +124,11 @@ onMounted(() => {
 <template>
   <LoaderOverlay v-if="isContentLoading" />
 
-  <div class="container" v-show="!isContentLoading">
+  <div
+    class="container"
+    :class="{ 'content-hidden': isContentLoading }"
+    style="transition: visibility 0s, opacity 0.5s linear"
+  >
     <section class="hero">
       <p class="sub-title">The Wedding of</p>
       <h1 class="title">{{ mempelai.pria }} & {{ mempelai.wanita }}</h1>
@@ -130,6 +143,8 @@ onMounted(() => {
     <CountdownSection :mempelai="mempelai" />
     <PerkenalanMempelai :mempelai="mempelai" />
     <EventDetails :mempelai="mempelai" />
+    <GiftSection :mempelai="mempelai" />
+    <RSVPSection :rsvp-link="RSVP_LINK" />
     <GuestbookSection
       :daftar-ucapan="daftarUcapan"
       :is-loading="isLoading"
@@ -157,6 +172,7 @@ onMounted(() => {
   min-height: 100vh;
   font-family: "Lato", sans-serif;
   color: #555;
+  scroll-behavior: smooth;
 }
 
 section {
@@ -173,6 +189,13 @@ h2 {
 }
 
 /* --- HERO (DIPERTAHANKAN) --- */
+.content-hidden {
+    /* Ini memastikan layout dimensi tetap ada, hanya isinya yang tidak terlihat */
+    visibility: hidden; 
+    /* Tambahkan opacity: 0 agar ada efek fade jika Anda mengatur transition di template */
+    opacity: 0; 
+}
+
 .hero {
   background-color: var(--bg-color);
   padding-top: 40px;

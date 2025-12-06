@@ -31,6 +31,61 @@ const hitungMundur = () => {
   }
 };
 
+const simpanTanggal = () => {
+    // 1. Format Tanggal ke format ICS (YYYYMMDDTHHMMSS)
+    const startDT = new Date(mempelai.tanggal);
+    // Tambahkan 2 jam untuk waktu selesai acara (asumsi)
+    const endDT = new Date(startDT.getTime() + 2 * 60 * 60 * 1000); 
+
+    const formatICSDate = (date) => {
+        // Format lokal YYYYMMDDTHHMMSS (Tanpa Z/UTC)
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hour = String(date.getHours()).padStart(2, '0');
+        const minute = String(date.getMinutes()).padStart(2, '0');
+        const second = String(date.getSeconds()).padStart(2, '0');
+        return `${year}${month}${day}T${hour}${minute}${second}`;
+    };
+
+    const dtStart = formatICSDate(startDT);
+    const dtEnd = formatICSDate(endDT);
+    const dtStamp = formatICSDate(new Date()); // Waktu saat ini
+
+    const title = `Undangan Pernikahan ${mempelai.pria} & ${mempelai.wanita}`;
+    const location = "Gedung Serbaguna Indah, Jakarta";
+    const description = `Mohon kehadiran Anda dalam acara pernikahan kami. Lokasi: ${location}`;
+
+    // 2. Susun Konten ICS
+    const icsContent = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//SimpanTanggal//WebUndangan//ID",
+        "BEGIN:VEVENT",
+        // Gunakan UID unik agar kalender tidak menganggapnya duplikat
+        `UID:${dtStamp}-${Math.random().toString(36).substring(2, 9)}`,
+        `DTSTAMP:${dtStamp}`,
+        `DTSTART:${dtStart}`,
+        `DTEND:${dtEnd}`,
+        `SUMMARY:${title}`,
+        `LOCATION:${location}`,
+        `DESCRIPTION:${description}`,
+        "END:VEVENT",
+        "END:VCALENDAR"
+    ].join('\n');
+
+    // 3. Trigger Download File .ics
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Undangan_${mempelai.pria}_${mempelai.wanita}.ics`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+};
+
 // Fungsi ambil data dari Google Sheets
 const ambilDataUcapan = async () => {
   try {
@@ -102,15 +157,14 @@ const kirimUcapan = async () => {
       <p class="sub-title">The Wedding of</p>
       <h1 class="title">{{ mempelai.pria }} & {{ mempelai.wanita }}</h1>
 
-      <div class="avatar-container">
-        <img src="/avatar_mempelai_ikhwan.png" alt="Avatar Mempelai Ikhwan" class="avatar avatar-pria">
-        <span class="and-symbol">&</span>
-        <img src="/avatar_mempelai_akhwat.png" alt="Avatar Mempelai Akhwat" class="avatar avatar-wanita">
-      </div>
+      <img 
+        src="/avatar_hero.png" 
+        alt="Mempelai Pria dan Wanita Berpegangan Tangan" 
+        class="full-frame-avatar"
+      >
 
-      <p class="date">18 Juni 2026</p>
     </section>
-
+    
     <section class="countdown-section">
       <h2>Menuju Halal</h2>
       <div class="timer-box">
@@ -131,6 +185,10 @@ const kirimUcapan = async () => {
           ><small>Detik</small>
         </div>
       </div>
+      <h3 class="date">18 Juni 2026</h3>
+      <button @click="simpanTanggal" class="btn-save-date">
+        Simpan Tanggal ke Kalender
+      </button>
     </section>
 
     <section class="location-section">
@@ -224,11 +282,9 @@ h2 {
 /* --- HERO --- */
 .hero {
   /* Ganti URL gambar */
-  background-image: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('https://source.unsplash.com/random/480x800/?wedding,love');
-  background-size: cover;
-  background-position: center; /* Agar posisi gambar tetap di tengah */
-  padding-top: 80px;
-  padding-bottom: 80px;
+  background-color: var(--bg-color);
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .sub-title {
@@ -243,12 +299,22 @@ h2 {
   margin: 10px 0;
   line-height: 1.2;
 }
-.date {
-  font-weight: bold;
-  margin-top: 10px;
+
+.full-frame-avatar {
+  width: 90%; /* Mengambil 90% lebar layar HP */
+  max-height: 50vh; /* Maksimal 50% dari tinggi viewport agar content lain tetap terlihat */
+  height: auto;
+  object-fit: contain; /* Memastikan gambar tidak terpotong saat diskalakan */
+  margin: 20px auto;
+  display: block;
+  border-radius: 8px; /* Sudut sedikit membulat */
 }
 
 /* --- COUNTDOWN --- */
+.date {
+  font-weight: bold;
+  margin-top: 30px;
+}
 .timer-box {
   display: flex;
   justify-content: center;
@@ -269,6 +335,25 @@ h2 {
 .time-item small {
   font-size: 0.6rem;
   text-transform: uppercase;
+}
+
+.btn-save-date {
+  background-color: #bc6c25; /* Warna cokelat/emas gelap */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px; /* Dibuat agak bulat */
+  cursor: pointer;
+  margin-top: 10px; /* Jarak dari kotak countdown */
+  font-size: 0.9rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-save-date:hover {
+  background-color: #a45a1e;
 }
 
 /* --- MAP --- */
@@ -382,6 +467,12 @@ footer {
     height: 120px;
     border-width: 5px; 
   }
+
+  .full-frame-avatar {
+    max-width: 95%; 
+    max-height: 500px; /* Batasi tinggi maksimum di laptop */
+  }
+
   .and-symbol {
     font-size: 4rem;
   }

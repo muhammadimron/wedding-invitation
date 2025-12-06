@@ -2,6 +2,8 @@
 import { onMounted, ref } from "vue";
 import dataAwal from "./assets/ucapan.json";
 
+const API_URL = "https://sheetdb.io/api/v1/7ev7dpmgzl9uh";
+
 // --- DATA MEMPELAI & ACARA ---
 const mempelai = {
   pria: "Imron",
@@ -29,6 +31,19 @@ const hitungMundur = () => {
   }
 };
 
+// Fungsi ambil data dari Google Sheets
+const ambilDataUcapan = async () => {
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    // SheetDB mengembalikan array objek, kita urutkan dari yang terbaru (opsional)
+    // Asumsi data baru ditambahkan di bawah, kita reverse agar muncul di atas
+    daftarUcapan.value = data.reverse(); 
+  } catch (error) {
+    console.error("Gagal mengambil data:", error);
+  }
+};
+
 // --- LOGIKA BUKU TAMU (MENGGUNAKAN LOCALSTORAGE) ---
 const daftarUcapan = ref([]);
 const inputNama = ref("");
@@ -47,26 +62,42 @@ onMounted(() => {
   }
 });
 
-const kirimUcapan = () => {
-  if (!inputNama.value || !inputPesan.value)
-    return alert("Mohon isi nama dan pesan");
+const kirimUcapan = async () => {
+  if (!inputNama.value || !inputPesan.value) return alert("Mohon isi nama dan pesan");
 
-  const ucapanBaru = {
+  isLoading.value = true;
+  
+  const dataBaru = {
     nama: inputNama.value,
-    tanggal: new Date().toLocaleDateString("id-ID"),
-    pesan: inputPesan.value,
+    tanggal: new Date().toLocaleDateString('id-ID'),
+    pesan: inputPesan.value
   };
 
-  // Tambahkan ke array (paling atas)
-  daftarUcapan.value.unshift(ucapanBaru);
+  try {
+    // Kirim data ke SheetDB (POST)
+    await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ data: dataBaru })
+    });
 
-  // Simpan ke LocalStorage (Agar tidak hilang saat refresh di browser sendiri)
-  localStorage.setItem("ucapan_tamu", JSON.stringify(daftarUcapan.value));
-
-  // Reset Form
-  inputNama.value = "";
-  inputPesan.value = "";
-  alert("Terima kasih atas ucapan Anda! (Simulasi Tersimpan)");
+    // Reset Form
+    inputNama.value = "";
+    inputPesan.value = "";
+    
+    // Ambil ulang data agar tampilan terupdate
+    await ambilDataUcapan();
+    
+    alert("Terima kasih, ucapan berhasil dikirim!");
+  } catch (error) {
+    console.error("Error kirim:", error);
+    alert("Gagal mengirim pesan. Coba lagi nanti.");
+  } finally {
+    isLoading.value = false;
+  }
 };
 </script>
 

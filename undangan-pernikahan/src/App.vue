@@ -101,6 +101,13 @@ const kirimUcapan = async () => {
     <section class="hero">
       <p class="sub-title">The Wedding of</p>
       <h1 class="title">{{ mempelai.pria }} & {{ mempelai.wanita }}</h1>
+
+      <div class="avatar-container">
+        <img src="/avatar_mempelai_ikhwan.png" alt="Avatar Mempelai Ikhwan" class="avatar avatar-pria">
+        <span class="and-symbol">&</span>
+        <img src="/avatar_mempelai_akhwat.png" alt="Avatar Mempelai Akhwat" class="avatar avatar-wanita">
+      </div>
+
       <p class="date">18 Juni 2026</p>
     </section>
 
@@ -337,6 +344,30 @@ footer {
   background: #eee;
 }
 
+/* === STYLE UNTUK AVATAR === */
+.avatar-container {
+  display: flex;
+  justify-content: center; /* Membuat mereka di tengah */
+  align-items: center;
+  gap: 15px; 
+  margin: 20px 0; 
+}
+
+.avatar {
+  width: 100px;  /* Ukuran di HP */
+  height: 100px;
+  border-radius: 50%; 
+  object-fit: cover; 
+  border: 4px solid var(--primary-color); 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+.and-symbol {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem; 
+  color: var(--primary-color);
+}
+
 /* --- MEDIA QUERY: UNTUK LAYAR BESAR (Tablet/Laptop) --- */
 /* Terapkan batas lebar maksimum hanya pada layar > 600px */
 @media (min-width: 600px) {
@@ -344,6 +375,15 @@ footer {
     max-width: 550px; /* Batas lebar untuk tampilan di laptop */
     margin: 0 auto; /* Posisi di tengah layar */
     box-shadow: 0 0 20px rgba(0,0,0,0.1); /* Kembalikan shadow di laptop */
+  }
+
+  .avatar {
+    width: 120px; /* Ukuran di Laptop/Tablet */
+    height: 120px;
+    border-width: 5px; 
+  }
+  .and-symbol {
+    font-size: 4rem;
   }
 
   /* Perbesar ukuran font di layar laptop agar lebih nyaman */

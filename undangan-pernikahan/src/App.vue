@@ -538,7 +538,7 @@ footer {
   }
 
   .arab-text {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   .terjemahan {

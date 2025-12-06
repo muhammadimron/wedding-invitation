@@ -48,6 +48,7 @@ const ambilDataUcapan = async () => {
 const daftarUcapan = ref([]);
 const inputNama = ref("");
 const inputPesan = ref("");
+const isLoading = ref(false);
 
 // Load data saat web dibuka
 onMounted(() => {

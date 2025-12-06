@@ -136,7 +136,7 @@ onMounted(() => {
       @kirim-ucapan="kirimUcapan"
     />
     <footer>
-      <p>Copyright by Muhammad Imron 2026</p>
+      <p>Copyright by Muhammad Imron | 2026</p>
     </footer>
   </div>
 </template>

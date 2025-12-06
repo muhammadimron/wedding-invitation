@@ -342,7 +342,7 @@ h2 {
 
 .arab-text {
   font-family: 'Scheherazade New', serif;
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 2;
   margin-bottom: 20px;
   color: #333;
@@ -538,7 +538,7 @@ footer {
   }
 
   .arab-text {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .terjemahan {

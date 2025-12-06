@@ -192,13 +192,13 @@ const kirimUcapan = async () => {
 
 /* --- GLOBAL LAYOUT --- */
 .container {
-  max-width: 480px; /* Ukuran Mobile First */
-  margin: 0 auto;
+  /* Hapus fixed max-width di sini untuk tampilan mobile default (100% lebar) */
+  margin: 0; 
   background-color: #fefcf5;
   min-height: 100vh;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
   color: #555;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  /* Hapus box-shadow agar lebih bersih di HP */
 }
 
 section {
@@ -216,13 +216,10 @@ h2 {
 
 /* --- HERO --- */
 .hero {
-  background-image: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.8),
-      rgba(255, 255, 255, 0.8)
-    ),
-    url("https://source.unsplash.com/random/800x600/?wedding");
+  /* Ganti URL gambar */
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('https://source.unsplash.com/random/480x800/?wedding,love');
   background-size: cover;
+  background-position: center; /* Agar posisi gambar tetap di tengah */
   padding-top: 80px;
   padding-bottom: 80px;
 }
@@ -234,7 +231,7 @@ h2 {
 }
 .title {
   font-family: "Great Vibes", cursive;
-  font-size: 4rem;
+  font-size: 3.5rem;
   color: #bc6c25;
   margin: 10px 0;
   line-height: 1.2;
@@ -248,22 +245,22 @@ h2 {
 .timer-box {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 10px;
 }
 .time-item {
   background: #d4a373;
   color: white;
-  padding: 10px;
+  padding: 10px 5px;
   border-radius: 8px;
-  min-width: 60px;
+  min-width: 55px;
 }
 .time-item span {
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
 }
 .time-item small {
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
 }
 
@@ -311,6 +308,7 @@ textarea {
   text-align: left;
   max-height: 400px;
   overflow-y: auto;
+  padding-right: 5px; /* Untuk estetika scrollbar */
 }
 .message-card {
   background: white;
@@ -337,5 +335,29 @@ footer {
   text-align: center;
   font-size: 0.8rem;
   background: #eee;
+}
+
+/* --- MEDIA QUERY: UNTUK LAYAR BESAR (Tablet/Laptop) --- */
+/* Terapkan batas lebar maksimum hanya pada layar > 600px */
+@media (min-width: 600px) {
+  .container {
+    max-width: 550px; /* Batas lebar untuk tampilan di laptop */
+    margin: 0 auto; /* Posisi di tengah layar */
+    box-shadow: 0 0 20px rgba(0,0,0,0.1); /* Kembalikan shadow di laptop */
+  }
+
+  /* Perbesar ukuran font di layar laptop agar lebih nyaman */
+  .title {
+    font-size: 4.5rem;
+  }
+  .time-item {
+    min-width: 70px;
+  }
+  .time-item span {
+    font-size: 1.8rem;
+  }
+  h2 {
+    font-size: 3rem;
+  }
 }
 </style>

@@ -23,7 +23,7 @@ const mempelai = {
   pria: "Imron",
   wanita: "Dewi",
   lengkapPria: "Muhammad Imron",
-  lengkapWanita: "Sri Dewi Lestari",
+  lengkapWanita: "Dewi Sri Lestari",
   ayahPria: "Mokhamad Bahrun Triyono",
   ibuPria: "Sri Kamtinah",
   ayahWanita: "Montague",

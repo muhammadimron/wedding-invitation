@@ -34,7 +34,7 @@
 /* Style untuk Spinner (Animation) */
 .spinner {
   border: 4px solid rgba(0, 0, 0, 0.1); /* Warna dasar spinner (transparan) */
-  border-top: 4px solid var(--primary-color); /* Warna tema untuk bagian berputar */
+  border-top: 4px solid #d4a373; /* Warna tema untuk bagian berputar */
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -45,7 +45,7 @@
 .loader-text {
   font-family: "Great Vibes", cursive;
   font-size: 1.5rem;
-  color: var(--primary-color);
+  color: #d4a373;
   margin: 0;
 }
 

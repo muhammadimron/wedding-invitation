@@ -1,3 +1,55 @@
+<template>
+  <LoaderOverlay v-if="isContentLoading && showCover" />
+
+  <CoverSection
+    v-if="!isContentLoading && showCover"
+    :mempelaiPria="mempelai.pria"
+    :mempelaiWanita="mempelai.wanita"
+    :tanggalAcara="mempelai.akad.tanggal"
+    @open="handleOpenInvitation"
+  />
+  <template v-if="isInvitationOpened">
+    <NasheedPlayer />
+
+    <div
+      id="app-container"
+      class="container"
+      :class="{ 'content-hidden': isContentLoading }"
+      style="transition: visibility 0s, opacity 0.5s linear"
+    >
+      <section class="hero">
+        <p class="sub-title">The Wedding of</p>
+        <h1 class="title">{{ mempelai.pria }} & {{ mempelai.wanita }}</h1>
+        <img
+          src="/avatar_hero.png"
+          alt="Mempelai Pria dan Wanita Berpegangan Tangan"
+          class="full-frame-avatar"
+        />
+      </section>
+
+      <QuranQuote />
+      <CountdownSection :mempelai="mempelai" />
+      <PerkenalanMempelai :mempelai="mempelai" />
+      <EventDetails :mempelai="mempelai" />
+      <GiftSection :mempelai="mempelai" />
+      <RSVPSection
+        @submit-rsvp="kirimRSVP"
+        :statistik="statistikRSVP"
+        :isLoading="isLoading"
+      />
+      <GuestbookSection
+        :daftar-ucapan="daftarUcapan"
+        :is-loading="isLoading"
+        @kirim-ucapan="kirimUcapan"
+      />
+      <ClosingSection />
+
+      <ToastNotification />
+      <BottomNavBar />
+    </div>
+  </template>
+</template>
+
 <script setup>
 import { onMounted, ref } from "vue";
 import { createClient } from "@supabase/supabase-js";
@@ -16,8 +68,6 @@ import CountdownSection from "./components/CountdownSection.vue";
 import GuestbookSection from "./components/GuestBookSection.vue";
 import CoverSection from "./components/CoverSection.vue";
 import { triggerToast } from "./composables/useToast.js";
-
-const RSVP_LINK = "https://forms.gle/ContohLinkRSVPAnda";
 
 const SUPABASE_URL = "https://ymisxzlsmpbodvfiqzws.supabase.co";
 const SUPABASE_KEY =
@@ -70,12 +120,47 @@ const isContentLoading = ref(true);
 const showCover = ref(true); // Default: Tampilkan cover
 const isInvitationOpened = ref(false); // Untuk menandai undangan sudah dibuka
 
+const statistikRSVP = ref({ total: 0, hadir: 0, tidakHadir: 0 });
+
 const handleOpenInvitation = () => {
   showCover.value = false;
   isInvitationOpened.value = true;
   isContentLoading.value = false;
   // Jika NasheedPlayer otomatis di-play oleh interaksi ini,
   // maka ia akan mulai berbunyi.
+};
+
+// Fungsi kirim RSVP
+const kirimRSVP = async (dataRSVP) => {
+  isLoading.value = true;
+  try {
+    const { error } = await supabase.from("rsvp").insert([dataRSVP]);
+
+    if (error) throw error;
+    await ambilStatistikRSVP();
+    triggerToast("Terima kasih! Konfirmasi kehadiran Anda telah tersimpan.");
+  } catch (error) {
+    console.error("Gagal RSVP:", error.message);
+    triggerToast("Gagal mengirim konfirmasi. Coba lagi nanti.");
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const ambilStatistikRSVP = async () => {
+  isLoading.value = true; // Mulai loading
+  const { data, error } = await supabase.from("rsvp").select("kehadiran");
+
+  if (!error && data) {
+    statistikRSVP.value.total = data.length;
+    statistikRSVP.value.hadir = data.filter(
+      (d) => d.kehadiran === "Hadir"
+    ).length;
+    statistikRSVP.value.tidakHadir = data.filter(
+      (d) => d.kehadiran === "Tidak Hadir"
+    ).length;
+  }
+  isLoading.value = false; // Selesai loading
 };
 
 // Fungsi ambil data dari Google Sheets
@@ -130,9 +215,10 @@ const kirimUcapan = async ({ nama, pesan }) => {
 // Load data saat web dibuka
 onMounted(() => {
   ambilDataUcapan(); // PENTING: Tunggu hingga semua aset (termasuk gambar) selesai dimuat
+  ambilStatistikRSVP();
 
   // AKTIFKAN REAL-TIME SUBSCRIPTION
-  const channel = supabase
+  supabase
     .channel("public:ucapan") // Nama channel bebas
     .on(
       "postgres_changes",
@@ -151,6 +237,18 @@ onMounted(() => {
     )
     .subscribe();
 
+  supabase
+    .channel("public:rsvp_stats")
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "rsvp" },
+      () => {
+        // Setiap ada baris baru di tabel rsvp, hitung ulang statistik
+        ambilStatistikRSVP();
+      }
+    )
+    .subscribe();
+
   window.addEventListener("load", () => {
     // Beri sedikit delay (500ms) agar transisi hilangnya loader terasa halus
     setTimeout(() => {
@@ -165,54 +263,6 @@ onMounted(() => {
   }
 });
 </script>
-
-<template>
-  <LoaderOverlay v-if="isContentLoading && showCover" />
-
-  <CoverSection
-    v-if="!isContentLoading && showCover"
-    :mempelaiPria="mempelai.pria"
-    :mempelaiWanita="mempelai.wanita"
-    :tanggalAcara="mempelai.akad.tanggal"
-    @open="handleOpenInvitation"
-  />
-  <template v-if="isInvitationOpened">
-    <NasheedPlayer />
-
-    <div
-      id="app-container"
-      class="container"
-      :class="{ 'content-hidden': isContentLoading }"
-      style="transition: visibility 0s, opacity 0.5s linear"
-    >
-      <section class="hero">
-        <p class="sub-title">The Wedding of</p>
-        <h1 class="title">{{ mempelai.pria }} & {{ mempelai.wanita }}</h1>
-        <img
-          src="/avatar_hero.png"
-          alt="Mempelai Pria dan Wanita Berpegangan Tangan"
-          class="full-frame-avatar"
-        />
-      </section>
-
-      <QuranQuote />
-      <CountdownSection :mempelai="mempelai" />
-      <PerkenalanMempelai :mempelai="mempelai" />
-      <EventDetails :mempelai="mempelai" />
-      <GiftSection :mempelai="mempelai" />
-      <RSVPSection :rsvp-link="RSVP_LINK" />
-      <GuestbookSection
-        :daftar-ucapan="daftarUcapan"
-        :is-loading="isLoading"
-        @kirim-ucapan="kirimUcapan"
-      />
-      <ClosingSection />
-
-      <ToastNotification />
-      <BottomNavBar />
-    </div>
-  </template>
-</template>
 
 <style scoped>
 /* --- VARIABLE CSS (DIPERTAHANKAN DI SINI UNTUK GLOBAL) --- */

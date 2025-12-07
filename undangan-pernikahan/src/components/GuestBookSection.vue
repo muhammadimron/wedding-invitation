@@ -147,7 +147,7 @@ textarea {
 input:focus,
 textarea:focus {
   /* Ganti border menjadi warna tema */
-  border-color: var(--primary-color);
+  border-color: #bc6c25;
   outline: none; /* Hapus outline biru/hitam default browser */
   /* Tambahkan bayangan lembut berwarna tema untuk efek "cerah" */
   box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);

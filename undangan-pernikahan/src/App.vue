@@ -4,7 +4,7 @@ import { onMounted, ref } from "vue";
 import LoaderOverlay from "./components/LoaderOverlay.vue";
 import ToastNotification from "./components/ToastNotification.vue";
 import BottomNavBar from "./components/BottomNavBar.vue";
-import ClosingSection from './components/ClosingSection.vue';
+import ClosingSection from "./components/ClosingSection.vue";
 import NasheedPlayer from "./components/NasheedPlayer.vue";
 import GiftSection from "./components/GiftSection.vue";
 import RSVPSection from "./components/RSVPSection.vue";
@@ -13,6 +13,7 @@ import PerkenalanMempelai from "./components/PerkenalanMempelai.vue";
 import EventDetails from "./components/EventDetails.vue";
 import CountdownSection from "./components/CountdownSection.vue";
 import GuestbookSection from "./components/GuestBookSection.vue";
+import CoverSection from "./components/CoverSection.vue";
 import { triggerToast } from "./composables/useToast.js";
 
 const API_URL = "https://sheetdb.io/api/v1/7ev7dpmgzl9uh";
@@ -60,6 +61,17 @@ const mempelai = {
 const daftarUcapan = ref([]);
 const isLoading = ref(false);
 const isContentLoading = ref(true);
+
+const showCover = ref(true); // Default: Tampilkan cover
+const isInvitationOpened = ref(false); // Untuk menandai undangan sudah dibuka
+
+const handleOpenInvitation = () => {
+  showCover.value = false;
+  isInvitationOpened.value = true;
+  isContentLoading.value = false;
+  // Jika NasheedPlayer otomatis di-play oleh interaksi ini,
+  // maka ia akan mulai berbunyi.
+};
 
 // Fungsi ambil data dari Google Sheets
 const ambilDataUcapan = async () => {
@@ -135,42 +147,51 @@ onMounted(() => {
 </script>
 
 <template>
-  <LoaderOverlay v-if="isContentLoading" />
-  <NasheedPlayer v-if="!isContentLoading" />
-  
-  <div
-    id="app-container"
-    class="container"
-    :class="{ 'content-hidden': isContentLoading }"
-    style="transition: visibility 0s, opacity 0.5s linear"
-  >
-    <section class="hero">
-      <p class="sub-title">The Wedding of</p>
-      <h1 class="title">{{ mempelai.pria }} & {{ mempelai.wanita }}</h1>
-      <img
-        src="/avatar_hero.png"
-        alt="Mempelai Pria dan Wanita Berpegangan Tangan"
-        class="full-frame-avatar"
+  <LoaderOverlay v-if="isContentLoading && showCover" />
+
+  <CoverSection
+    v-if="!isContentLoading && showCover"
+    :mempelaiPria="mempelai.pria"
+    :mempelaiWanita="mempelai.wanita"
+    :tanggalAcara="mempelai.akad.tanggal"
+    @open="handleOpenInvitation"
+  />
+  <template v-if="isInvitationOpened">
+    <NasheedPlayer />
+
+    <div
+      id="app-container"
+      class="container"
+      :class="{ 'content-hidden': isContentLoading }"
+      style="transition: visibility 0s, opacity 0.5s linear"
+    >
+      <section class="hero">
+        <p class="sub-title">The Wedding of</p>
+        <h1 class="title">{{ mempelai.pria }} & {{ mempelai.wanita }}</h1>
+        <img
+          src="/avatar_hero.png"
+          alt="Mempelai Pria dan Wanita Berpegangan Tangan"
+          class="full-frame-avatar"
+        />
+      </section>
+
+      <QuranQuote />
+      <CountdownSection :mempelai="mempelai" />
+      <PerkenalanMempelai :mempelai="mempelai" />
+      <EventDetails :mempelai="mempelai" />
+      <GiftSection :mempelai="mempelai" />
+      <RSVPSection :rsvp-link="RSVP_LINK" />
+      <GuestbookSection
+        :daftar-ucapan="daftarUcapan"
+        :is-loading="isLoading"
+        @kirim-ucapan="kirimUcapan"
       />
-    </section>
+      <ClosingSection />
 
-    <QuranQuote />
-    <CountdownSection :mempelai="mempelai" />
-    <PerkenalanMempelai :mempelai="mempelai" />
-    <EventDetails :mempelai="mempelai" />
-    <GiftSection :mempelai="mempelai" />
-    <RSVPSection :rsvp-link="RSVP_LINK" />
-    <GuestbookSection
-      :daftar-ucapan="daftarUcapan"
-      :is-loading="isLoading"
-      @kirim-ucapan="kirimUcapan"
-    />
-    <ClosingSection />
-
-    <ToastNotification />
-    <BottomNavBar />
-  </div>
-
+      <ToastNotification />
+      <BottomNavBar />
+    </div>
+  </template>
 </template>
 
 <style scoped>

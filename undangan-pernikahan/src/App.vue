@@ -92,6 +92,8 @@ const kirimUcapan = async ({ nama, pesan }) => {
   isLoading.value = true;
 
   const dataBaru = {
+    // TAMBAHKAN ID UNIK DI SINI
+    id: Date.now().toString(),
     nama: nama,
     tanggal:
       new Date().toLocaleDateString("id-ID") +
@@ -262,6 +264,20 @@ h2 {
   margin: 20px auto;
   display: block;
   border-radius: 8px;
+  opacity: 0;
+  animation: fadeInAvatar 1.5s ease forwards;
+  animation-delay: 0.5s; /* Muncul sedikit setelah kontainer utama */
+}
+
+@keyframes fadeInAvatar {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* --- FOOTER (DIPERTAHANKAN) --- */

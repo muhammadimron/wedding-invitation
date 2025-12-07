@@ -5,8 +5,14 @@
       <h1 class="names">{{ mempelaiPria }} & {{ mempelaiWanita }}</h1>
       <p class="date-text">{{ tanggalAcara }}</p>
 
-      <button class="open-button" @click="openInvitation">
-        <i class="fas fa-envelope-open"></i> Buka Undangan
+      <button
+        class="open-button"
+        @click="handleOpenWithPreload"
+        :disabled="isWaitingAssets"
+      >
+        <i v-if="!isWaitingAssets" class="fas fa-envelope-open"></i>
+        <i v-else class="fas fa-spinner fa-spin"></i>
+        <span>{{ isWaitingAssets ? "Menyiapkan..." : "Buka Undangan" }}</span>
       </button>
     </div>
   </div>
@@ -18,17 +24,56 @@ import { ref, defineProps, defineEmits } from "vue";
 const props = defineProps({
   mempelaiPria: String,
   mempelaiWanita: String,
-  tanggalAcara: String, // Contoh: "Kamis, 18 Juni 2026"
+  tanggalAcara: String,
 });
 
 const emit = defineEmits(["open"]);
-const isFadingOut = ref(false);
 
-const openInvitation = () => {
-  isFadingOut.value = true; // Aktifkan kelas fade-out
+const isFadingOut = ref(false);
+const isWaitingAssets = ref(false);
+
+const handleOpenWithPreload = () => {
+  isWaitingAssets.value = true;
+
+  // Tentukan aset krusial yang harus di-preload agar Hero Section tampil sempurna
+  const assetsToLoad = [
+    "/avatar_hero.png",
+    "/avatar_mempelai_akhwat",
+    "/avatar_mempelai_ikhwan",
+    "/logo.png",
+    "/nasheed_wedding_muhammad_al_mutqi.mp3",
+  ];
+  let loadedCount = 0;
+
+  // Fungsi internal untuk memulai transisi keluar
+  const startTransition = () => {
+    isFadingOut.value = true;
+    setTimeout(() => {
+      emit("open");
+      isWaitingAssets.value = false;
+    }, 1000); // Harus sama dengan durasi transition CSS (1s)
+  };
+
+  // Logika Preloading
+  assetsToLoad.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      loadedCount++;
+      if (loadedCount === assetsToLoad.length) {
+        startTransition();
+      }
+    };
+    img.onerror = () => {
+      // Jika error (misal file tidak ketemu), tetap lanjut agar user tidak stuck
+      startTransition();
+    };
+  });
+
+  // Safety Timeout: Jika internet sangat lambat, paksa buka setelah 3.5 detik
   setTimeout(() => {
-    emit("open"); // Emit event 'open' setelah animasi fade-out
-  }, 1000); // Sesuaikan durasi timeout dengan durasi transisi CSS
+    if (isWaitingAssets.value) startTransition();
+  }, 3500);
 };
 </script>
 
@@ -45,14 +90,15 @@ const openInvitation = () => {
   align-items: center;
   flex-direction: column;
   text-align: center;
-  z-index: 2000; /* Pastikan di atas semua elemen lain */
-  transition: opacity 1s ease-out, visibility 1s ease-out; /* Transisi untuk fade-out */
+  z-index: 2000;
+  /* Transisi fade out yang mulus */
+  transition: opacity 1s ease-out, visibility 1s ease-out;
 }
 
 .cover-section.fade-out {
   opacity: 0;
   visibility: hidden;
-  pointer-events: none; /* Penting agar tidak menghalangi klik setelah fade-out */
+  pointer-events: none;
 }
 
 .cover-content {
@@ -74,7 +120,7 @@ const openInvitation = () => {
 }
 
 .names {
-  font-family: "Great Vibes", cursive; /* Font yang elegan */
+  font-family: "Great Vibes", cursive;
   font-size: 4rem;
   color: #bc6c25;
   margin: 10px 0 20px;
@@ -83,7 +129,7 @@ const openInvitation = () => {
 }
 
 .date-text {
-  font-family: "Times New Roman", serif; /* Font klasik */
+  font-family: "Times New Roman", serif;
   font-size: 1.2rem;
   color: #d4a373;
   margin-bottom: 40px;
@@ -93,7 +139,7 @@ const openInvitation = () => {
   background-color: #bc6c25;
   color: #ffffff;
   border: none;
-  border-radius: 50px; /* Bentuk pil */
+  border-radius: 50px;
   padding: 15px 30px;
   font-family: "Poppins", sans-serif;
   font-size: 1rem;
@@ -104,10 +150,16 @@ const openInvitation = () => {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  min-width: 200px; /* Lebar minimum agar tombol tidak goyang saat ganti teks */
 }
 
-.open-button:hover {
-  background-color: #a15d22; /* Sedikit lebih gelap saat hover */
+.open-button:disabled {
+  background-color: #d4a373;
+  cursor: wait;
+}
+
+.open-button:hover:not(:disabled) {
+  background-color: #a15d22;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
@@ -116,7 +168,20 @@ const openInvitation = () => {
   font-size: 1.1rem;
 }
 
-/* Media Query untuk ukuran font di layar lebih kecil/besar */
+/* Spinner Animation */
+.fa-spin {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 400px) {
   .names {
     font-size: 3rem;
@@ -125,6 +190,7 @@ const openInvitation = () => {
     font-size: 0.5rem;
   }
 }
+
 @media (min-width: 768px) {
   .names {
     font-size: 5rem;

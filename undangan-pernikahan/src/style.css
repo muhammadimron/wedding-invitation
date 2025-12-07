@@ -76,3 +76,17 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #fefcf5; 
+}
+::-webkit-scrollbar-thumb {
+  background: #d4a373; /* Warna emas/krem tema Anda */
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #bc6c25; 
+}

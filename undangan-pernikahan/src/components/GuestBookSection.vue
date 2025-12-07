@@ -94,19 +94,21 @@ const handleKirimUcapan = () => {
     </div>
 
     <div class="messages-list">
+      <TransitionGroup name="list-stagger">
+        <div
+          v-for="(item, index) in daftarUcapan"
+          :key="item.id || index"
+          class="message-card"
+        >
+          <h4>{{ item.nama }}</h4>
+          <small>{{ item.tanggal }}</small>
+          <p>{{ item.pesan }}</p>
+        </div>
+      </TransitionGroup>
+
       <div v-if="isLoading" class="loading-message">Memuat ucapan...</div>
       <div v-else-if="daftarUcapan.length === 0" class="empty-message">
         Belum ada ucapan. Jadilah yang pertama!
-      </div>
-      <div
-        v-else
-        v-for="(item, index) in daftarUcapan"
-        :key="index"
-        class="message-card"
-      >
-        <h4>{{ item.nama }}</h4>
-        <small>{{ item.tanggal }}</small>
-        <p>{{ item.pesan }}</p>
       </div>
     </div>
   </section>
@@ -171,6 +173,7 @@ textarea:focus {
   border-radius: 8px;
   margin-bottom: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
 }
 .message-card h4 {
   margin: 0;
@@ -185,6 +188,24 @@ textarea:focus {
   margin-top: 5px;
   font-style: italic;
   font-size: 0.8rem;
+}
+
+.message-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 1. Animasi untuk UCAPAN BARU (Masuk) */
+.list-stagger-enter-active {
+  transition: all 0.6s ease-out;
+}
+
+.list-stagger-enter-from {
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+}
+
+.list-stagger-move {
+  transition: transform 0.6s ease;
 }
 
 .input-error {

@@ -238,16 +238,22 @@ onMounted(() => {
     .subscribe();
 
   supabase
-    .channel("public:rsvp_stats")
+    .channel("rsvp-updates")
     .on(
       "postgres_changes",
-      { event: "INSERT", schema: "public", table: "rsvp" },
+      {
+        event: "INSERT", // Kita pantau saat ada data baru masuk
+        schema: "public",
+        table: "rsvp",
+      },
       () => {
-        // Setiap ada baris baru di tabel rsvp, hitung ulang statistik
-        ambilStatistikRSVP();
+        console.log("Data RSVP baru terdeteksi, memperbarui statistik...");
+        ambilStatistikRSVP(); // Panggil fungsi hitung ulang
       }
     )
-    .subscribe();
+    .subscribe((status) => {
+      console.log("Status subscription RSVP:", status); // Cek di console apakah 'SUBSCRIBED'
+    });
 
   window.addEventListener("load", () => {
     // Beri sedikit delay (500ms) agar transisi hilangnya loader terasa halus

@@ -116,7 +116,7 @@ onMounted(() => {
 h2 {
   font-family: "Great Vibes", cursive;
   font-size: 2.5rem;
-  color: #d4a373;
+  color: #bc6c25;
   margin-bottom: 20px;
 }
 

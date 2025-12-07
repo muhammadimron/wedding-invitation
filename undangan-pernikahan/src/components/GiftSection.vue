@@ -1,5 +1,5 @@
 <template>
-  <section class="gift-section">
+  <section id="gift-section" class="gift-section">
     <h2>Amplop Online</h2>
     <p class="intro">
       Doa restu dari Bapak/Ibu/Saudara/i sekalian sudah merupakan karunia yang
@@ -62,7 +62,7 @@ const copyRekening = () => {
 h2 {
   font-family: "Great Vibes", cursive;
   font-size: 2.5rem;
-  color: #d4a373;
+  color: #bc6c25;
   margin-bottom: 20px;
 }
 

@@ -3,6 +3,9 @@ import { onMounted, ref } from "vue";
 // IMPORT KOMPONEN BARU
 import LoaderOverlay from "./components/LoaderOverlay.vue";
 import ToastNotification from "./components/ToastNotification.vue";
+import BottomNavBar from "./components/BottomNavBar.vue";
+import ClosingSection from './components/ClosingSection.vue';
+import NasheedPlayer from "./components/NasheedPlayer.vue";
 import GiftSection from "./components/GiftSection.vue";
 import RSVPSection from "./components/RSVPSection.vue";
 import QuranQuote from "./components/QuranQoute.vue";
@@ -37,7 +40,7 @@ const mempelai = {
     tempat: "Kediaman Mempelai Akhwat",
   },
   alamat: {
-    namaTempat: "Kediaman Bpk. Montague",
+    namaTempat: "Kediaman Mempelai Akhwat",
     jalan: "Jl. Cinta Abadi No. 12, RT 05/RW 02",
     kota: "Nanjungjaya, Kec. Kersamanah, Kabupaten Garut, Jawa Barat 44189",
     gmapsLink: "https://maps.app.goo.gl/H21ue3w9mSJ5tbKS6",
@@ -78,7 +81,13 @@ const kirimUcapan = async ({ nama, pesan }) => {
 
   const dataBaru = {
     nama: nama,
-    tanggal: new Date().toLocaleDateString("id-ID") + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+    tanggal:
+      new Date().toLocaleDateString("id-ID") +
+      " " +
+      new Date().toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
     pesan: pesan,
   };
 
@@ -127,8 +136,10 @@ onMounted(() => {
 
 <template>
   <LoaderOverlay v-if="isContentLoading" />
-
+  <NasheedPlayer v-if="!isContentLoading" />
+  
   <div
+    id="app-container"
     class="container"
     :class="{ 'content-hidden': isContentLoading }"
     style="transition: visibility 0s, opacity 0.5s linear"
@@ -154,12 +165,12 @@ onMounted(() => {
       :is-loading="isLoading"
       @kirim-ucapan="kirimUcapan"
     />
-    <footer>
-      <p>Copyright by Muhammad Imron | 2026</p>
-    </footer>
+    <ClosingSection />
 
     <ToastNotification />
+    <BottomNavBar />
   </div>
+
 </template>
 
 <style scoped>
@@ -174,6 +185,7 @@ onMounted(() => {
 /* --- GLOBAL LAYOUT (DIPERTAHANKAN) --- */
 .container {
   margin: 0;
+  padding-bottom: 80px;
   background-color: #fefcf5;
   min-height: 100vh;
   font-family: "Lato", sans-serif;

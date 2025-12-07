@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-  <section class="event-details">
+  <section id="event-details" class="event-details">
     <h2>Waktu dan Tempat</h2>
 
     <div class="event-card-container">
@@ -30,6 +30,7 @@ defineProps({
     <div class="full-address-block">
       <h2>Lokasi Acara</h2>
       <p class="address-name">{{ mempelai.alamat.namaTempat }}</p>
+      <br>
       <p class="address-detail">{{ mempelai.alamat.jalan }}</p>
       <p class="address-detail">{{ mempelai.alamat.kota }}</p>
       <div class="map-container">
@@ -54,7 +55,7 @@ defineProps({
 h2 {
   font-family: "Great Vibes", cursive;
   font-size: 2.5rem;
-  color: #d4a373;
+  color: #bc6c25;
   margin-bottom: 20px;
 }
 
@@ -126,6 +127,10 @@ h2 {
   margin-top: 0;
 }
 
+.address-name {
+  font-weight: bold;
+}
+
 .address-detail,
 .address-name {
   font-size: 0.9rem;
@@ -136,8 +141,8 @@ h2 {
 .map-container {
   border-radius: 10px;
   overflow: hidden;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 

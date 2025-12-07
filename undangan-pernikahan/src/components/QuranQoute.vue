@@ -22,7 +22,7 @@
 h2 {
   font-family: "Great Vibes", cursive;
   font-size: 2.5rem;
-  color: #d4a373;
+  color: #bc6c25;
   margin-bottom: 20px;
 }
 
@@ -33,20 +33,20 @@ h2 {
 }
 
 .taawwudh-text {
-  font-family: "Scheherazade New", serif;
+  font-family: "Times New Roman", serif;
   font-size: 1rem;
   margin-bottom: 10px;
-  color: #555;
+  color: #bc6c25;
   direction: rtl;
   text-align: center;
 }
 
 .arab-text {
-  font-family: "Scheherazade New", serif;
+  font-family: "Times New Roman", serif;
   font-size: 1rem;
   line-height: 2;
   margin-bottom: 20px;
-  color: #333;
+  color: #bc6c25;
   direction: rtl;
   text-align: center;
 }

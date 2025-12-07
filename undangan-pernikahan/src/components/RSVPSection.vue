@@ -40,7 +40,7 @@ h2 {
   font-family: "Great Vibes", cursive;
   font-size: 2.5rem;
   /* Menggunakan warna primary yang terlihat di Gift Section */
-  color: #d4a373;
+  color: #bc6c25;
   margin-bottom: 20px;
 }
 

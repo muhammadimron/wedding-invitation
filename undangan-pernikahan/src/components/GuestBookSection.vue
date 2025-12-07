@@ -63,7 +63,7 @@ const handleKirimUcapan = () => {
 </script>
 
 <template>
-  <section class="guestbook-section">
+  <section id="guestbook-section" class="guestbook-section">
     <h2>Ucapkan Sesuatu</h2>
 
     <div class="form-box">
@@ -118,7 +118,7 @@ const handleKirimUcapan = () => {
 h2 {
   font-family: "Great Vibes", cursive;
   font-size: 2.5rem;
-  color: #d4a373;
+  color: #bc6c25;
   margin-bottom: 20px;
 }
 

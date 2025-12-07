@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-  <section class="perkenalan">
+  <section id="perkenalan-mempelai" class="perkenalan">
     <h2>Mempelai</h2>
     <div class="couple-intro-container">
       <div class="mempelai-card">
@@ -47,7 +47,7 @@ defineProps({
 h2 {
   font-family: "Great Vibes", cursive;
   font-size: 2.5rem;
-  color: #d4a373;
+  color: #bc6c25;
   margin-bottom: 20px;
 }
 

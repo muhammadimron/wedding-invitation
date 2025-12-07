@@ -10,6 +10,7 @@ import PerkenalanMempelai from "./components/PerkenalanMempelai.vue";
 import EventDetails from "./components/EventDetails.vue";
 import CountdownSection from "./components/CountdownSection.vue";
 import GuestbookSection from "./components/GuestBookSection.vue";
+import { triggerToast } from "./composables/useToast.js";
 
 const API_URL = "https://sheetdb.io/api/v1/7ev7dpmgzl9uh";
 const RSVP_LINK = "https://forms.gle/ContohLinkRSVPAnda";
@@ -47,7 +48,8 @@ const mempelai = {
     bank: "BCA Syariah", // Ganti dengan bank Anda
     rekening: "0092013176", // Ganti dengan nomor rekening Anda
     atasNama: "Muhammad Imron",
-    opsiLain: "Jl. Masjid Raya No. 5, Nanjungjaya, Kec. Kersamanah, Kabupaten Garut, Jawa Barat 44189 (Kotak Kado)" // Alamat pengiriman fisik
+    opsiLain:
+      "Jl. Masjid Raya No. 5, Nanjungjaya, Kec. Kersamanah, Kabupaten Garut, Jawa Barat 44189 (Kotak Kado)", // Alamat pengiriman fisik
   },
 };
 
@@ -69,13 +71,14 @@ const ambilDataUcapan = async () => {
 
 // Fungsi kirim ucapan dipanggil dari GuestbookSection
 const kirimUcapan = async ({ nama, pesan }) => {
-  if (!nama || !pesan) return alert("Mohon isi nama dan pesan");
+  // Validasi sudah diurus di GuestbookSection.vue
+  if (!nama || !pesan) return;
 
   isLoading.value = true;
 
   const dataBaru = {
     nama: nama,
-    tanggal: new Date().toLocaleDateString("id-ID"),
+    tanggal: new Date().toLocaleDateString("id-ID") + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
     pesan: pesan,
   };
 
@@ -89,12 +92,15 @@ const kirimUcapan = async ({ nama, pesan }) => {
       body: JSON.stringify({ data: dataBaru }),
     });
 
+    // 1. Ambil data ucapan terbaru segera setelah sukses POST
     await ambilDataUcapan();
 
-    alert("Terima kasih, ucapan berhasil dikirim!");
+    // 2. Tampilkan Toast sukses (menggantikan alert)
+    triggerToast("Terima kasih, ucapan berhasil dikirim!");
   } catch (error) {
     console.error("Error kirim:", error);
-    alert("Gagal mengirim pesan. Coba lagi nanti.");
+    // Tampilkan Toast error (menggantikan alert)
+    triggerToast("Gagal mengirim pesan. Coba lagi nanti.");
   } finally {
     isLoading.value = false;
   }
@@ -102,18 +108,15 @@ const kirimUcapan = async ({ nama, pesan }) => {
 
 // Load data saat web dibuka
 onMounted(() => {
-  ambilDataUcapan();
+  ambilDataUcapan(); // PENTING: Tunggu hingga semua aset (termasuk gambar) selesai dimuat
 
-  // PENTING: Tunggu hingga semua aset (termasuk gambar) selesai dimuat
   window.addEventListener("load", () => {
     // Beri sedikit delay (500ms) agar transisi hilangnya loader terasa halus
     setTimeout(() => {
       isContentLoading.value = false;
     }, 500);
-  });
+  }); // Jika window.onload sudah terpicu sebelum onMounted (sangat cepat), // kita tetap perlu memastikan loader hilang.
 
-  // Jika window.onload sudah terpicu sebelum onMounted (sangat cepat),
-  // kita tetap perlu memastikan loader hilang.
   if (document.readyState === "complete") {
     setTimeout(() => {
       isContentLoading.value = false;
@@ -154,7 +157,7 @@ onMounted(() => {
     <footer>
       <p>Copyright by Muhammad Imron | 2026</p>
     </footer>
-    
+
     <ToastNotification />
   </div>
 </template>
@@ -193,10 +196,10 @@ h2 {
 
 /* --- HERO (DIPERTAHANKAN) --- */
 .content-hidden {
-    /* Ini memastikan layout dimensi tetap ada, hanya isinya yang tidak terlihat */
-    visibility: hidden; 
-    /* Tambahkan opacity: 0 agar ada efek fade jika Anda mengatur transition di template */
-    opacity: 0; 
+  /* Ini memastikan layout dimensi tetap ada, hanya isinya yang tidak terlihat */
+  visibility: hidden;
+  /* Tambahkan opacity: 0 agar ada efek fade jika Anda mengatur transition di template */
+  opacity: 0;
 }
 
 .hero {

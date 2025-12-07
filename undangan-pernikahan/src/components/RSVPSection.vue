@@ -28,21 +28,27 @@
         placeholder="Catatan (Opsional)..."
       ></textarea>
 
-      <button
-        @click="handleSubmit"
-        class="btn-primary"
-        :disabled="isLoading"
-      >
+      <button @click="handleSubmit" class="btn-primary" :disabled="isLoading">
         {{ isLoading ? "Mengirim..." : "Konfirmasi Kehadiran" }}
       </button>
 
-      <div class="stats-container shadow-premium">
-        <div v-for="(val, key) in mappedStats" :key="key" class="stat-item">
+      <div class="stats-container">
+        <div class="stat-item">
           <div v-if="isLoading" class="mini-loader"></div>
-
-          <span v-else class="stat-count">{{ val.count }}</span>
-
-          <span class="stat-label">{{ val.label }}</span>
+          <span v-else class="stat-count">{{ animatedStats.total }}</span>
+          <span class="stat-label">Konfirmasi</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div v-if="isLoading" class="mini-loader"></div>
+          <span v-else class="stat-count">{{ animatedStats.hadir }}</span>
+          <span class="stat-label">Hadir</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div v-if="isLoading" class="mini-loader"></div>
+          <span v-else class="stat-count">{{ animatedStats.absen }}</span>
+          <span class="stat-label">Absen</span>
         </div>
       </div>
     </div>
@@ -50,7 +56,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { ref, watch, reactive } from "vue";
 
 const emit = defineEmits(["submit-rsvp"]);
 const props = defineProps({
@@ -67,33 +73,67 @@ const form = ref({
 const namaError = ref("");
 const kehadiranError = ref("");
 
-const mappedStats = computed(() => [
-  { label: 'Total', count: props.statistik?.total || 0 },
-  { label: 'Hadir', count: props.statistik?.hadir || 0 },
-  { label: 'Absen', count: props.statistik?.tidakHadir || 0 }
-]);
+const animatedStats = reactive({
+  total: 0,
+  hadir: 0,
+  absen: 0,
+});
+
+// FUNGSI ANIMASI NUMBER COUNTER
+const animateNumber = (key, targetValue) => {
+  const duration = 1500; // 1.5 detik durasi animasi
+  const startValue = animatedStats[key];
+  const startTime = performance.now();
+
+  const step = (currentTime) => {
+    const progress = Math.min((currentTime - startTime) / duration, 1);
+    // Easing function agar melambat di akhir
+    const easeOut = 1 - Math.pow(1 - progress, 3);
+
+    animatedStats[key] = Math.floor(easeOut * targetValue);
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      animatedStats[key] = targetValue; // Pastikan berakhir di angka tepat
+    }
+  };
+
+  requestAnimationFrame(step);
+};
+
+// Pantau saat loading selesai untuk memicu animasi
+watch(
+  () => props.isLoading,
+  (loading) => {
+    if (!loading && props.statistik) {
+      animateNumber("total", props.statistik.total || 0);
+      animateNumber("hadir", props.statistik.hadir || 0);
+      animateNumber("absen", props.statistik.tidakHadir || 0);
+    }
+  },
+  { immediate: true }
+);
+
+// Pantau jika ada update real-time (tamu lain kirim data)
+watch(
+  () => props.statistik,
+  (newVal) => {
+    if (!props.isStatsLoading && newVal) {
+      animateNumber("total", newVal.total || 0);
+      animateNumber("hadir", newVal.hadir || 0);
+      animateNumber("absen", newVal.tidakHadir || 0);
+    }
+  },
+  { deep: true }
+);
 
 const handleSubmit = () => {
-  namaError.value = "";
-  kehadiranError.value = "";
-
-  let hasError = false;
-
-  if (!form.value.nama.trim()) {
-    namaError.value = "Nama tidak boleh kosong.";
-    hasError = true;
-  }
-
-  if (!form.value.kehadiran) {
-    kehadiranError.value = "Mohon pilih status kehadiran.";
-    hasError = true;
-  }
-
-  if (hasError) return;
+  if (!form.value.nama.trim()) return (namaError.value = "Nama wajib diisi.");
+  if (!form.value.kehadiran)
+    return (kehadiranError.value = "Pilih status kehadiran.");
 
   emit("submit-rsvp", { ...form.value });
-
-  // Reset form
   form.value = { nama: "", kehadiran: "", pesan_tambahan: "" };
 };
 </script>
@@ -218,8 +258,12 @@ select:focus {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .stat-count {

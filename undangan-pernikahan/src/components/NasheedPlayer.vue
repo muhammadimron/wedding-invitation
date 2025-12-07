@@ -72,10 +72,11 @@ onBeforeUnmount(() => {
 }
 
 .nasheed-button {
-  /* Ukuran default (Desktop/Tablet) */
   position: relative;
   width: 50px;
   height: 50px;
+  /* Tambahkan padding 0 untuk memastikan bentuk bulat tidak tertekan */
+  padding: 0; 
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -89,10 +90,16 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   z-index: 2;
+  /* Memaksa box-sizing agar tidak melebar saat ada border */
+  box-sizing: border-box; 
+  /* Mencegah distorsi flexbox */
+  flex-shrink: 0; 
 }
 
 .nasheed-button i {
   font-size: 1.2rem;
+  /* Pastikan icon berada tepat di tengah */
+  display: block; 
 }
 
 .nasheed-button.is-playing {
@@ -101,7 +108,6 @@ onBeforeUnmount(() => {
   box-shadow: 0 4px 15px rgba(188, 108, 37, 0.4);
 }
 
-/* Penyesuaian untuk dimensi layar kecil (Mobile) */
 @media (max-width: 480px) {
   .nasheed-player-container {
     top: 15px;
@@ -109,12 +115,13 @@ onBeforeUnmount(() => {
   }
 
   .nasheed-button {
-    width: 35px; /* Ukuran tombol lebih kecil */
-    height: 35px;
+    /* Gunakan ukuran yang pasti */
+    width: 40px; 
+    height: 40px;
   }
 
   .nasheed-button i {
-    font-size: 0.9rem; /* Ukuran ikon lebih kecil */
+    font-size: 1rem;
   }
 }
 
@@ -126,15 +133,19 @@ audio {
   display: none;
 }
 
-/* Denyut Ring */
 .pulse-ring {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  /* Gunakan calc untuk memposisikan tepat di tengah jika ukuran terpengaruh */
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
   border-radius: 50%;
   border: 2px solid #bc6c25;
   z-index: -1;
   animation: ripple 2s infinite ease-out;
+  /* Memastikan ring tidak terpotong */
+  box-sizing: border-box; 
 }
 
 .delay {
@@ -143,6 +154,6 @@ audio {
 
 @keyframes ripple {
   0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(2); opacity: 0; }
+  100% { transform: scale(2.2); opacity: 0; } /* Perbesar scale sedikit agar terlihat jelas di mobile */
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <section id="gift-section" class="gift-section">
+  <section v-aos id="gift-section" class="gift-section">
     <h2>Amplop Online</h2>
     <p class="intro">
       Doa restu dari Bapak/Ibu/Saudara/i sekalian sudah merupakan karunia yang
@@ -30,7 +30,7 @@
 
 <script setup>
 import { defineProps } from "vue";
-import { triggerToast } from '../composables/useToast.js';
+import { triggerToast } from "../composables/useToast.js";
 
 const props = defineProps({
   mempelai: Object,

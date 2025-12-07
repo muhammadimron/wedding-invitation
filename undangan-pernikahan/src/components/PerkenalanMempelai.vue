@@ -1,12 +1,5 @@
-<script setup>
-// Definisikan prop untuk menerima data dari App.vue
-defineProps({
-  mempelai: Object,
-});
-</script>
-
 <template>
-  <section id="perkenalan-mempelai" class="perkenalan">
+  <section v-aos id="perkenalan-mempelai" class="perkenalan">
     <h2>Mempelai</h2>
     <div class="couple-intro-container">
       <div class="mempelai-card">
@@ -41,6 +34,13 @@ defineProps({
     </div>
   </section>
 </template>
+
+<script setup>
+// Definisikan prop untuk menerima data dari App.vue
+defineProps({
+  mempelai: Object,
+});
+</script>
 
 <style scoped>
 /* Salin semua style untuk .perkenalan, .couple-intro-container, .mempelai-card, dll. */

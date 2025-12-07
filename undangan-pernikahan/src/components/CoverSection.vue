@@ -1,5 +1,5 @@
 <template>
-  <div class="cover-section" :class="{ 'fade-out': isFadingOut }">
+  <div v-aos class="cover-section" :class="{ 'fade-out': isFadingOut }">
     <div class="cover-content">
       <p class="greeting-text">Undangan Pernikahan</p>
       <h1 class="names">{{ mempelaiPria }} & {{ mempelaiWanita }}</h1>

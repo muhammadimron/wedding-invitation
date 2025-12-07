@@ -1,5 +1,5 @@
 <template>
-  <section class="closing-section">
+  <section v-aos class="closing-section">
     <div class="closing-content thankyou">
       <h2 class="closing-title">Penutup</h2>
       <p class="closing-text">

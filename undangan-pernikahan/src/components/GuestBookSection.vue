@@ -1,3 +1,55 @@
+<template>
+  <section v-aos id="guestbook-section" class="guestbook-section">
+    <h2>Ucapkan Sesuatu</h2>
+
+    <div class="form-box">
+      <input
+        v-model="inputNama"
+        type="text"
+        placeholder="Nama Anda"
+        :class="{ 'input-error': namaError }"
+        @input="resetNamaError"
+      />
+      <p v-if="namaError" class="error-message">{{ namaError }}</p>
+
+      <textarea
+        v-model="inputPesan"
+        placeholder="Tulis ucapan dan doa..."
+        :class="{ 'input-error': pesanError }"
+        @input="resetPesanError"
+      ></textarea>
+      <p v-if="pesanError" class="error-message">{{ pesanError }}</p>
+
+      <button
+        @click="handleKirimUcapan"
+        class="btn-primary"
+        :disabled="isLoading"
+      >
+        {{ isLoading ? "Mengirim..." : "Kirim Ucapan" }}
+      </button>
+    </div>
+
+    <div class="messages-list">
+      <TransitionGroup name="list-stagger">
+        <div
+          v-for="(item, index) in daftarUcapan"
+          :key="item.id || index"
+          class="message-card"
+        >
+          <h4>{{ item.nama }}</h4>
+          <small>{{ item.tanggal }}</small>
+          <p>{{ item.pesan }}</p>
+        </div>
+      </TransitionGroup>
+
+      <div v-if="isLoading" class="loading-message">Memuat ucapan...</div>
+      <div v-else-if="daftarUcapan.length === 0" class="empty-message">
+        Belum ada ucapan. Jadilah yang pertama!
+      </div>
+    </div>
+  </section>
+</template>
+
 <script setup>
 import { ref } from "vue";
 import { defineProps, defineEmits } from "vue";
@@ -61,58 +113,6 @@ const handleKirimUcapan = () => {
   inputPesan.value = "";
 };
 </script>
-
-<template>
-  <section id="guestbook-section" class="guestbook-section">
-    <h2>Ucapkan Sesuatu</h2>
-
-    <div class="form-box">
-      <input
-        v-model="inputNama"
-        type="text"
-        placeholder="Nama Anda"
-        :class="{ 'input-error': namaError }"
-        @input="resetNamaError"
-      />
-      <p v-if="namaError" class="error-message">{{ namaError }}</p>
-
-      <textarea
-        v-model="inputPesan"
-        placeholder="Tulis ucapan dan doa..."
-        :class="{ 'input-error': pesanError }"
-        @input="resetPesanError"
-      ></textarea>
-      <p v-if="pesanError" class="error-message">{{ pesanError }}</p>
-
-      <button
-        @click="handleKirimUcapan"
-        class="btn-primary"
-        :disabled="isLoading"
-      >
-        {{ isLoading ? "Mengirim..." : "Kirim Ucapan" }}
-      </button>
-    </div>
-
-    <div class="messages-list">
-      <TransitionGroup name="list-stagger">
-        <div
-          v-for="(item, index) in daftarUcapan"
-          :key="item.id || index"
-          class="message-card"
-        >
-          <h4>{{ item.nama }}</h4>
-          <small>{{ item.tanggal }}</small>
-          <p>{{ item.pesan }}</p>
-        </div>
-      </TransitionGroup>
-
-      <div v-if="isLoading" class="loading-message">Memuat ucapan...</div>
-      <div v-else-if="daftarUcapan.length === 0" class="empty-message">
-        Belum ada ucapan. Jadilah yang pertama!
-      </div>
-    </div>
-  </section>
-</template>
 
 <style scoped>
 /* Salin semua style untuk .guestbook-section, .form-box, .messages-list, dll. */

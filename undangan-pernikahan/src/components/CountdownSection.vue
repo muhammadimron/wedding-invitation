@@ -1,3 +1,31 @@
+<template>
+  <section v-aos class="countdown-section">
+    <h2>Menuju Halal</h2>
+    <div class="timer-box">
+      <div class="time-item">
+        <span>{{ waktuTersisa.hari }}</span
+        ><small>Hari</small>
+      </div>
+      <div class="time-item">
+        <span>{{ waktuTersisa.jam }}</span
+        ><small>Jam</small>
+      </div>
+      <div class="time-item">
+        <span>{{ waktuTersisa.menit }}</span
+        ><small>Menit</small>
+      </div>
+      <div class="time-item">
+        <span>{{ waktuTersisa.detik }}</span
+        ><small>Detik</small>
+      </div>
+    </div>
+    <h3 class="date">18 Juni 2026</h3>
+    <button @click="simpanTanggal" class="btn-save-date">
+      Simpan Tanggal ke Kalender
+    </button>
+  </section>
+</template>
+
 <script setup>
 import { ref, onMounted } from "vue";
 
@@ -82,34 +110,6 @@ onMounted(() => {
   setInterval(hitungMundur, 1000);
 });
 </script>
-
-<template>
-  <section class="countdown-section">
-    <h2>Menuju Halal</h2>
-    <div class="timer-box">
-      <div class="time-item">
-        <span>{{ waktuTersisa.hari }}</span
-        ><small>Hari</small>
-      </div>
-      <div class="time-item">
-        <span>{{ waktuTersisa.jam }}</span
-        ><small>Jam</small>
-      </div>
-      <div class="time-item">
-        <span>{{ waktuTersisa.menit }}</span
-        ><small>Menit</small>
-      </div>
-      <div class="time-item">
-        <span>{{ waktuTersisa.detik }}</span
-        ><small>Detik</small>
-      </div>
-    </div>
-    <h3 class="date">18 Juni 2026</h3>
-    <button @click="simpanTanggal" class="btn-save-date">
-      Simpan Tanggal ke Kalender
-    </button>
-  </section>
-</template>
 
 <style scoped>
 /* Salin semua style untuk .countdown-section, .timer-box, .btn-save-date, dll. */

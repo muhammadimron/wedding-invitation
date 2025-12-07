@@ -1,5 +1,5 @@
 <template>
-  <section class="rsvp-section">
+  <section v-aos class="rsvp-section">
     <h2>RSVP</h2>
     <p class="intro">
       Mohon konfirmasi kehadiran Anda untuk membantu kami dalam mempersiapkan

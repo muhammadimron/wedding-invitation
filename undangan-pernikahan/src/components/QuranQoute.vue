@@ -1,5 +1,5 @@
 <template>
-  <section class="quran-quote">
+  <section v-aos class="quran-quote">
     <p class="taawwudh-text">أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ</p>
     <p class="arab-text">
       وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا

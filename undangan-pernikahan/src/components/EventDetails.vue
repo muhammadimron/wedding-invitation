@@ -1,16 +1,9 @@
-<script setup>
-// Definisikan prop untuk menerima data dari App.vue
-defineProps({
-  mempelai: Object,
-});
-</script>
-
 <template>
-  <section id="event-details" class="event-details">
+  <section v-aos id="event-details" class="event-details">
     <h2>Waktu dan Tempat</h2>
 
-    <div class="event-card-container">
-      <div class="event-card akad-card">
+    <div v-aos class="event-card-container">
+      <div v-aos class="event-card akad-card">
         <span class="icon-event">💍</span>
         <h3>Akad Nikah</h3>
         <p class="event-date">{{ mempelai.akad.tanggal }}</p>
@@ -18,7 +11,7 @@ defineProps({
         <p class="event-location">{{ mempelai.akad.tempat }}</p>
       </div>
 
-      <div class="event-card resepsi-card">
+      <div v-aos class="event-card resepsi-card">
         <span class="icon-event">🎉</span>
         <h3>Resepsi Pernikahan</h3>
         <p class="event-date">{{ mempelai.resepsi.tanggal }}</p>
@@ -27,10 +20,10 @@ defineProps({
       </div>
     </div>
 
-    <div class="full-address-block">
+    <div v-aos class="full-address-block">
       <h2>Lokasi Acara</h2>
       <p class="address-name">{{ mempelai.alamat.namaTempat }}</p>
-      <br>
+      <br />
       <p class="address-detail">{{ mempelai.alamat.jalan }}</p>
       <p class="address-detail">{{ mempelai.alamat.kota }}</p>
       <div class="map-container">
@@ -49,6 +42,13 @@ defineProps({
     </div>
   </section>
 </template>
+
+<script setup>
+// Definisikan prop untuk menerima data dari App.vue
+defineProps({
+  mempelai: Object,
+});
+</script>
 
 <style scoped>
 /* Salin semua style untuk .event-details, .event-card-container, .full-address-block, dll. */
@@ -153,19 +153,19 @@ h2 {
   color: white;
   text-decoration: none;
   /* Sesuaikan padding, radius, dan ukuran font agar terlihat sama */
-  padding: 10px 20px; 
-  border-radius: 25px; 
+  padding: 10px 20px;
+  border-radius: 25px;
   margin-top: 20px;
-  font-size: 0.9rem; 
+  font-size: 0.9rem;
   font-weight: bold;
   transition: background-color 0.3s;
   /* Tambahkan box-shadow agar terlihat 'terangkat' dan interaktif */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-maps:hover {
   /* Sesuaikan warna hover */
-  background-color: #a45a1e; 
+  background-color: #a45a1e;
 }
 @media (min-width: 600px) {
   .event-card-container {

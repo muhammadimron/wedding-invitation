@@ -167,19 +167,33 @@ textarea:focus {
   overflow-y: auto;
   padding-right: 5px;
 }
+
 .message-card {
   background: white;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.3s ease;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  
+  /* Soft Shadow: Bayangan yang luas dan tipis agar terlihat premium */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03), 
+              0 2px 5px rgba(0, 0, 0, 0.02);
+  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.message-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(188, 108, 37, 0.08); /* Glow cokelat emas tipis */
+}
+
+/* Tipografi di dalam Card */
 .message-card h4 {
-  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
   color: #bc6c25;
-  font-size: 1rem;
+  margin-bottom: 5px;
 }
+
 .message-card small {
   color: #999;
   font-size: 0.6rem;

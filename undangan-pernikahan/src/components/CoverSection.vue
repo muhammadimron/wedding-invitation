@@ -37,11 +37,11 @@ const handleOpenWithPreload = () => {
 
   // Tentukan aset krusial yang harus di-preload agar Hero Section tampil sempurna
   const assetsToLoad = [
-    "/avatar_hero.png",
-    "/avatar_mempelai_akhwat",
-    "/avatar_mempelai_ikhwan",
-    "/logo.png",
-    "/nasheed_wedding_muhammad_al_mutqi.mp3",
+    "/wedding-invitation/avatar_hero.png",
+    "/wedding-invitation/avatar_mempelai_akhwat.png",
+    "/wedding-invitation/avatar_mempelai_ikhwan.png",
+    "/wedding-invitation/logo.png",
+    "/wedding-invitation/nasheed_wedding_muhammad_al_mutqi.mp3",
   ];
   let loadedCount = 0;
 

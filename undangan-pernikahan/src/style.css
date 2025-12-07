@@ -90,25 +90,42 @@ button:focus-visible {
   transform: translateY(0);
 }
 
-.sub-title, .greeting-text, .loader-text {
+/* Styling Global Tipografi & Karakter */
+.sub-title,
+.greeting-text,
+.loader-text {
+  /* Memberikan spasi antar huruf untuk sub-judul agar lebih elegan */
   letter-spacing: 3px !important;
   font-weight: 500;
+  text-transform: uppercase;
+  color: #584b42;
 }
 
-.closing-text, .closing-footer {
-  line-height: 1.8; /* Memberi ruang bernapas pada teks panjang */
+.closing-text,
+.closing-footer {
+  /* Memberikan ruang antar baris yang lebih longgar agar nyaman dibaca */
+  line-height: 1.8;
+  color: #584b42;
+}
+
+h2 {
+  /* Kontras antara Great Vibes dan jarak antar huruf */
+  letter-spacing: 1px;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #fefcf5; 
+  background: #fefcf5;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #d4a373; /* Warna emas/krem tema Anda */
+  background: #d4a373; /* Warna emas tema */
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #bc6c25; 
+  background: #bc6c25;
 }

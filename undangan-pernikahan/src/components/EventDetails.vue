@@ -1,177 +1,231 @@
 <template>
   <section v-aos id="event-details" class="event-details">
-    <h2>Waktu dan Tempat</h2>
-
-    <div v-aos class="event-card-container">
-      <div v-aos class="event-card akad-card">
-        <span class="icon-event">💍</span>
-        <h3>Akad Nikah</h3>
-        <p class="event-date">{{ mempelai.akad.tanggal }}</p>
-        <p class="event-time">{{ mempelai.akad.waktu }}</p>
-        <p class="event-location">{{ mempelai.akad.tempat }}</p>
+    <div v-aos class="event-card-container shadow-premium">
+      <h2 class="section-title">Akad & Resepsi</h2>
+      <p class="address-intro">Yang Insya Allah akan dilaksanakan pada:</p>
+      
+      <div class="calendar-wrapper">
+        <div class="calendar-header">
+          <h3>JUNI 2026</h3>
+        </div>
+        
+        <div class="calendar-grid">
+          <div class="day-name">M</div>
+          <div class="day-name">S</div>
+          <div class="day-name">S</div>
+          <div class="day-name">R</div>
+          <div class="day-name">K</div>
+          <div class="day-name">J</div>
+          <div class="day-name">S</div>
+  
+          <div class="day-num-disable">31</div>
+          <div v-for="d in 17" :key="d" class="day-num">{{ d }}</div>
+          
+          <div class="day-num wedding-day">
+            <span class="highlight-circle"></span>
+            18
+          </div>
+  
+          <div v-for="d in [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]" :key="d" class="day-num">{{ d }}</div>
+          <div v-for="d in 4" :key="'next'+d" class="day-num-disable">{{ d }}</div>
+        </div>
       </div>
 
-      <div v-aos class="event-card resepsi-card">
-        <span class="icon-event">🎉</span>
-        <h3>Resepsi Pernikahan</h3>
-        <p class="event-date">{{ mempelai.resepsi.tanggal }}</p>
-        <p class="event-time">{{ mempelai.resepsi.waktu }}</p>
-        <p class="event-location">{{ mempelai.resepsi.tempat }}</p>
-      </div>
+      <hr class="separator">
+      <p class="time-highlight">Pukul 09.00 - 15.00 WIB</p>
     </div>
 
-    <div v-aos class="full-address-block">
-      <h2>Lokasi Acara</h2>
-      <p class="address-name">{{ mempelai.alamat.namaTempat }}</p>
-      <br />
-      <p class="address-detail">{{ mempelai.alamat.jalan }}</p>
-      <p class="address-detail">{{ mempelai.alamat.kota }}</p>
-      <div class="map-container">
-        <iframe
-          :src="mempelai.alamat.gmapsLinkEmbed"
-          width="100%"
-          height="300"
-          style="border: 0"
-          allowfullscreen=""
-          loading="lazy"
-        ></iframe>
+    <div v-aos class="location-wrapper">
+      <div class="location-card shadow-premium">
+        <h2 class="section-title">Lokasi Acara</h2>
+        <div class="location-info">
+          <h4 class="venue-name">{{ mempelai.alamat.namaTempat }}</h4>
+          <p class="venue-address">{{ mempelai.alamat.jalan }}</p>
+          <p class="venue-city">{{ mempelai.alamat.kota }}</p>
+        </div>
+
+        <div class="map-container">
+          <iframe
+            :src="mempelai.alamat.gmapsLinkEmbed"
+            width="100%"
+            height="250"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+          ></iframe>
+        </div>
+
+        <a :href="mempelai.alamat.gmapsLink" target="_blank" class="btn-maps">
+          <i class="fas fa-map-marker-alt"></i> Buka di Google Maps
+        </a>
       </div>
-      <a :href="mempelai.alamat.gmapsLink" target="_blank" class="btn-maps">
-        Lihat di Google Maps
-      </a>
     </div>
   </section>
 </template>
 
 <script setup>
-// Definisikan prop untuk menerima data dari App.vue
 defineProps({
   mempelai: Object,
 });
 </script>
 
 <style scoped>
-/* Salin semua style untuk .event-details, .event-card-container, .full-address-block, dll. */
-h2 {
-  font-family: "Great Vibes", cursive;
-  font-size: 2.5rem;
-  color: #bc6c25;
-  margin-bottom: 20px;
-}
-
 .event-details {
-  padding: 50px 20px;
-  background-color: var(--white);
+  padding: 80px 20px;
+  background-color: #fefcf5;
 }
 
+/* KOTAK UTAMA (CALENDAR BOX) */
 .event-card-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.event-card {
-  padding: 25px 15px;
-  border-radius: 12px;
-  background-color: #fef8f0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  padding: 40px 20px;
+  max-width: 450px;
+  margin: 0 auto 50px auto;
   text-align: center;
+  border: 1px dashed #bc6c25;
 }
 
-.icon-event {
-  font-size: 2.5rem;
-  display: block;
-  margin-bottom: 10px;
+.shadow-premium {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
-.event-card h3 {
+.section-title {
   font-family: "Great Vibes", cursive;
-  font-size: 2.2rem;
+  font-size: 2.8rem;
   color: #bc6c25;
-  margin: 0 0 10px 0;
+  margin-bottom: 5px;
 }
 
-.event-date {
-  font-weight: bold;
-  color: var(--text-color);
-  margin: 5px 0 0 0;
+.address-intro {
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: #888;
+  margin-bottom: 30px;
+  text-transform: uppercase;
 }
 
-.event-time {
-  font-style: italic;
-  color: #777;
-  margin: 15px 0 15px 0;
-  font-size: 0.6rem;
-}
-
-.event-location {
-  font-weight: bold;
-  font-size: 0.9rem;
-  color: #555;
-  margin: 0;
-}
-
-.full-address-block {
-  text-align: center;
-  max-width: 400px;
+/* CALENDAR STYLING */
+.calendar-wrapper {
   margin: 0 auto;
-  padding: 20px;
-  border: 1px dashed #d4a373;
-  border-radius: 8px;
 }
 
-.full-address-block h4 {
-  font-size: 1.1rem;
+.calendar-header h3 {
+  font-family: 'Times New Roman', serif;
+  font-size: 1.3rem;
+  letter-spacing: 4px;
+  color: #584b42;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #d4a373;
+  display: inline-block;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px 5px;
+}
+
+.day-name {
+  font-weight: bold;
   color: #bc6c25;
-  margin-top: 0;
+  font-size: 0.8rem;
 }
 
-.address-name {
+.day-num, .day-num-disable {
+  font-size: 0.95rem;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.day-num-disable { color: #eee; }
+.day-num { color: #584b42; }
+
+.wedding-day {
+  color: #bc6c25;
   font-weight: bold;
 }
 
-.address-detail,
-.address-name {
+.highlight-circle {
+  position: absolute;
+  width: 35px; height: 35px;
+  background-color: rgba(188, 108, 37, 0.15);
+  border-radius: 50%;
+  animation: soft-pulse 2s infinite;
+}
+
+@keyframes soft-pulse {
+  0% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 0.4; }
+}
+
+.time-highlight {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #bc6c25;
+  margin-top: 10px;
+}
+
+/* LOCATION BLOCK */
+.location-wrapper {
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.location-card {
+  border-radius: 20px;
+  padding: 40px 20px;
+  text-align: center;
+  border: 1px dashed #bc6c25;
+}
+
+.venue-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.venue-address, .venue-city {
   font-size: 0.9rem;
-  color: #555;
-  margin: 3px 0;
+  line-height: 1.6;
+  color: #777;
 }
 
 .map-container {
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 25px 0;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
 .btn-maps {
-  display: inline-block;
-  /* Ganti warna latar agar sama seperti tombol utama countdown */
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   background-color: #bc6c25;
   color: white;
+  padding: 12px 25px;
+  border-radius: 50px;
   text-decoration: none;
-  /* Sesuaikan padding, radius, dan ukuran font agar terlihat sama */
-  padding: 10px 20px;
-  border-radius: 25px;
-  margin-top: 20px;
-  font-size: 0.9rem;
   font-weight: bold;
-  transition: background-color 0.3s;
-  /* Tambahkan box-shadow agar terlihat 'terangkat' dan interaktif */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(188, 108, 37, 0.3);
 }
 
 .btn-maps:hover {
-  /* Sesuaikan warna hover */
-  background-color: #a45a1e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(188, 108, 37, 0.4);
 }
-@media (min-width: 600px) {
-  .event-card-container {
-    flex-direction: row;
-    max-width: 550px;
-    margin: 0 auto 40px auto;
-  }
+
+.separator {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #d4a373, transparent);
+  border: none;
+  margin: 30px auto;
 }
 </style>

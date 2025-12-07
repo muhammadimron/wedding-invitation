@@ -120,6 +120,15 @@ h2 {
   margin-bottom: 20px;
 }
 
+.separator {
+  width: 100px;
+  height: 2px;
+  /* Gradien emas yang memudar di sisi kanan-kiri */
+  background: linear-gradient(to right, transparent, #d4a373, transparent);
+  border: none;
+  margin: 30px auto;
+}
+
 .date {
   font-weight: bold;
   margin-top: 30px;

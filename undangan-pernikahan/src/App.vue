@@ -2,13 +2,14 @@
 import { onMounted, ref } from "vue";
 // IMPORT KOMPONEN BARU
 import LoaderOverlay from "./components/LoaderOverlay.vue";
+import ToastNotification from "./components/ToastNotification.vue";
 import GiftSection from "./components/GiftSection.vue";
 import RSVPSection from "./components/RSVPSection.vue";
 import QuranQuote from "./components/QuranQoute.vue";
 import PerkenalanMempelai from "./components/PerkenalanMempelai.vue";
 import EventDetails from "./components/EventDetails.vue";
 import CountdownSection from "./components/CountdownSection.vue";
-import GuestbookSection from "./components/GuestbookSection.vue";
+import GuestbookSection from "./components/GuestBookSection.vue";
 
 const API_URL = "https://sheetdb.io/api/v1/7ev7dpmgzl9uh";
 const RSVP_LINK = "https://forms.gle/ContohLinkRSVPAnda";
@@ -153,6 +154,8 @@ onMounted(() => {
     <footer>
       <p>Copyright by Muhammad Imron | 2026</p>
     </footer>
+    
+    <ToastNotification />
   </div>
 </template>
 

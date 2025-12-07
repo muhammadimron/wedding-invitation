@@ -30,6 +30,7 @@
 
 <script setup>
 import { defineProps } from "vue";
+import { triggerToast } from '../composables/useToast.js';
 
 const props = defineProps({
   mempelai: Object,
@@ -38,15 +39,15 @@ const props = defineProps({
 const copyRekening = () => {
   const rekening = props.mempelai.hadiah.rekening;
 
-  // Menggunakan Clipboard API untuk menyalin teks
   navigator.clipboard
     .writeText(rekening)
     .then(() => {
-      alert(`Nomor rekening ${rekening} berhasil disalin!`);
+      // Panggil triggerToast GLOBAL
+      triggerToast(`Nomor rekening ${rekening} berhasil disalin!`);
     })
-    .catch((err) => {
-      console.error("Gagal menyalin:", err);
-      alert("Gagal menyalin nomor rekening. Mohon salin manual.");
+    .catch(() => {
+      // Panggil triggerToast GLOBAL
+      triggerToast("Gagal menyalin. Mohon salin manual.");
     });
 };
 </script>
@@ -108,18 +109,18 @@ h2 {
   color: white;
   text-decoration: none;
   /* Sesuaikan padding, radius, dan ukuran font agar terlihat sama */
-  padding: 10px 20px; 
-  border-radius: 25px; 
+  padding: 10px 20px;
+  border-radius: 25px;
   margin-top: 20px;
-  font-size: 0.9rem; 
+  font-size: 0.9rem;
   font-weight: bold;
   transition: background-color 0.3s;
   /* Tambahkan box-shadow agar terlihat 'terangkat' dan interaktif */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-copy:hover {
-  background-color: #a45a1e; 
+  background-color: #a45a1e;
 }
 
 .btn-copy i {

@@ -90,6 +90,15 @@ button:focus-visible {
   transform: translateY(0);
 }
 
+.sub-title, .greeting-text, .loader-text {
+  letter-spacing: 3px !important;
+  font-weight: 500;
+}
+
+.closing-text, .closing-footer {
+  line-height: 1.8; /* Memberi ruang bernapas pada teks panjang */
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

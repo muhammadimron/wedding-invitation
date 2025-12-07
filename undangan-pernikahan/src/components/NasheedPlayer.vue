@@ -1,15 +1,14 @@
 <template>
-  <div class="nasheed-player-container">
-    <button
-      @click="toggleMusic"
-      class="nasheed-button"
-      :class="{ 'is-playing': isPlaying }"
-    >
+  <div class="nasheed-player-container"> 
+    <button @click="toggleMusic" class="nasheed-button" :class="{ 'is-playing': isPlaying }">
       <i :class="isPlaying ? 'fas fa-music' : 'fas fa-play'"></i>
+      
+      <div v-if="isPlaying" class="pulse-ring"></div>
+      <div v-if="isPlaying" class="pulse-ring delay"></div>
     </button>
 
     <audio ref="audioPlayer" loop preload="auto">
-      <source src="/nasheed_wedding_muhammad_al_mutqi.mp3" type="audio/mp3" />
+      <source src="/nasheed_wedding_muhammad_al_mutqi.mp3" type="audio/mp3">
       Browser Anda tidak mendukung elemen audio.
     </audio>
   </div>
@@ -74,6 +73,7 @@ onBeforeUnmount(() => {
 
 .nasheed-button {
   /* Ukuran default (Desktop/Tablet) */
+  position: relative;
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -88,6 +88,7 @@ onBeforeUnmount(() => {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+  z-index: 2;
 }
 
 .nasheed-button i {
@@ -123,5 +124,25 @@ onBeforeUnmount(() => {
 
 audio {
   display: none;
+}
+
+/* Denyut Ring */
+.pulse-ring {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  border: 2px solid #bc6c25;
+  z-index: -1;
+  animation: ripple 2s infinite ease-out;
+}
+
+.delay {
+  animation-delay: 1s;
+}
+
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
 }
 </style>

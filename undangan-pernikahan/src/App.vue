@@ -18,6 +18,8 @@ import { triggerToast } from "./composables/useToast.js";
 
 const API_URL = "https://sheetdb.io/api/v1/7ev7dpmgzl9uh";
 const RSVP_LINK = "https://forms.gle/ContohLinkRSVPAnda";
+const CACHE_KEY = 'wedding_guestbook_cache';
+const CACHE_EXPIRY = 30 * 60 * 1000; // 30 Menit dalam milidetik
 
 // --- DATA MEMPELAI & ACARA (GLOBAL DATA) ---
 const mempelai = {
@@ -75,12 +77,43 @@ const handleOpenInvitation = () => {
 
 // Fungsi ambil data dari Google Sheets
 const ambilDataUcapan = async () => {
+  const cachedData = localStorage.getItem(CACHE_KEY);
+  const now = new Date().getTime();
+
+  // 1. Cek apakah ada cache dan belum kedaluwarsa
+  if (cachedData) {
+    const { timestamp, data } = JSON.parse(cachedData);
+    if (now - timestamp < CACHE_EXPIRY) {
+      console.log("Menggunakan data dari cache...");
+      daftarUcapan.value = data;
+      return; // Berhenti di sini, tidak perlu fetch API
+    }
+  }
+
+  // 2. Jika tidak ada cache atau sudah expired, lakukan fetch
   try {
+    console.log("Mengambil data baru dari SheetDB...");
     const response = await fetch(API_URL);
     const data = await response.json();
-    daftarUcapan.value = data.reverse();
+    
+    // Balik urutan agar terbaru di atas
+    const sortedData = data.reverse();
+    daftarUcapan.value = sortedData;
+
+    // 3. Simpan data baru ke localStorage
+    const cacheObject = {
+      timestamp: now,
+      data: sortedData
+    };
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cacheObject));
+
   } catch (error) {
     console.error("Gagal mengambil data:", error);
+    // Jika fetch gagal, coba pakai cache lama sebagai fallback (daripada kosong)
+    if (cachedData) {
+      const { data } = JSON.parse(cachedData);
+      daftarUcapan.value = data;
+    }
   }
 };
 
@@ -116,6 +149,7 @@ const kirimUcapan = async ({ nama, pesan }) => {
     });
 
     // 1. Ambil data ucapan terbaru segera setelah sukses POST
+    localStorage.removeItem(CACHE_KEY);
     await ambilDataUcapan();
 
     // 2. Tampilkan Toast sukses (menggantikan alert)

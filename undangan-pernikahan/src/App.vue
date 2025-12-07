@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import { createClient } from "@supabase/supabase-js";
 // IMPORT KOMPONEN BARU
 import LoaderOverlay from "./components/LoaderOverlay.vue";
 import ToastNotification from "./components/ToastNotification.vue";
@@ -16,10 +17,12 @@ import GuestbookSection from "./components/GuestBookSection.vue";
 import CoverSection from "./components/CoverSection.vue";
 import { triggerToast } from "./composables/useToast.js";
 
-const API_URL = "https://sheetdb.io/api/v1/7ev7dpmgzl9uh";
 const RSVP_LINK = "https://forms.gle/ContohLinkRSVPAnda";
-const CACHE_KEY = 'wedding_guestbook_cache';
-const CACHE_EXPIRY = 30 * 60 * 1000; // 30 Menit dalam milidetik
+
+const SUPABASE_URL = "https://ymisxzlsmpbodvfiqzws.supabase.co";
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltaXN4emxzbXBib2R2ZmlxendzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUwOTA0MTgsImV4cCI6MjA4MDY2NjQxOH0.SYOOmA3FMZtcgzy6XsgNs_TvQinW4OhXJeQkvFL-QeY";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- DATA MEMPELAI & ACARA (GLOBAL DATA) ---
 const mempelai = {
@@ -77,57 +80,28 @@ const handleOpenInvitation = () => {
 
 // Fungsi ambil data dari Google Sheets
 const ambilDataUcapan = async () => {
-  const cachedData = localStorage.getItem(CACHE_KEY);
-  const now = new Date().getTime();
-
-  // 1. Cek apakah ada cache dan belum kedaluwarsa
-  if (cachedData) {
-    const { timestamp, data } = JSON.parse(cachedData);
-    if (now - timestamp < CACHE_EXPIRY) {
-      console.log("Menggunakan data dari cache...");
-      daftarUcapan.value = data;
-      return; // Berhenti di sini, tidak perlu fetch API
-    }
-  }
-
-  // 2. Jika tidak ada cache atau sudah expired, lakukan fetch
   try {
-    console.log("Mengambil data baru dari SheetDB...");
-    const response = await fetch(API_URL);
-    const data = await response.json();
-    
-    // Balik urutan agar terbaru di atas
-    const sortedData = data.reverse();
-    daftarUcapan.value = sortedData;
+    // Mengambil data dari tabel 'ucapan', urutkan berdasarkan yang terbaru (tanggal input)
+    const { data, error } = await supabase
+      .from("ucapan")
+      .select("*")
+      .order("id", { ascending: false }); // Gunakan ID atau created_at untuk urutan terbaru
 
-    // 3. Simpan data baru ke localStorage
-    const cacheObject = {
-      timestamp: now,
-      data: sortedData
-    };
-    localStorage.setItem(CACHE_KEY, JSON.stringify(cacheObject));
-
+    if (error) throw error;
+    daftarUcapan.value = data;
   } catch (error) {
-    console.error("Gagal mengambil data:", error);
-    // Jika fetch gagal, coba pakai cache lama sebagai fallback (daripada kosong)
-    if (cachedData) {
-      const { data } = JSON.parse(cachedData);
-      daftarUcapan.value = data;
-    }
+    console.error("Gagal mengambil data dari Supabase:", error.message);
   }
 };
 
 // Fungsi kirim ucapan dipanggil dari GuestbookSection
 const kirimUcapan = async ({ nama, pesan }) => {
-  // Validasi sudah diurus di GuestbookSection.vue
   if (!nama || !pesan) return;
-
   isLoading.value = true;
 
   const dataBaru = {
-    // TAMBAHKAN ID UNIK DI SINI
-    id: Date.now().toString(),
     nama: nama,
+    pesan: pesan,
     tanggal:
       new Date().toLocaleDateString("id-ID") +
       " " +
@@ -135,29 +109,19 @@ const kirimUcapan = async ({ nama, pesan }) => {
         hour: "2-digit",
         minute: "2-digit",
       }),
-    pesan: pesan,
   };
 
   try {
-    await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ data: dataBaru }),
-    });
+    const { error } = await supabase.from("ucapan").insert([dataBaru]);
 
-    // 1. Ambil data ucapan terbaru segera setelah sukses POST
-    localStorage.removeItem(CACHE_KEY);
+    if (error) throw error;
+
+    // Refresh data setelah sukses
     await ambilDataUcapan();
-
-    // 2. Tampilkan Toast sukses (menggantikan alert)
     triggerToast("Terima kasih, ucapan berhasil dikirim!");
   } catch (error) {
-    console.error("Error kirim:", error);
-    // Tampilkan Toast error (menggantikan alert)
-    triggerToast("Gagal mengirim pesan. Coba lagi nanti.");
+    console.error("Gagal kirim pesan:", error.message);
+    triggerToast("Gagal mengirim pesan.");
   } finally {
     isLoading.value = false;
   }
@@ -166,6 +130,26 @@ const kirimUcapan = async ({ nama, pesan }) => {
 // Load data saat web dibuka
 onMounted(() => {
   ambilDataUcapan(); // PENTING: Tunggu hingga semua aset (termasuk gambar) selesai dimuat
+
+  // AKTIFKAN REAL-TIME SUBSCRIPTION
+  const channel = supabase
+    .channel("public:ucapan") // Nama channel bebas
+    .on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "ucapan",
+      },
+      (payload) => {
+        console.log("Ada pesan baru masuk!", payload.new);
+
+        // Tambahkan data baru ke daftar ucapan (di posisi paling atas)
+        // Gunakan spread operator agar Vue mendeteksi perubahan state
+        daftarUcapan.value = [payload.new, ...daftarUcapan.value];
+      }
+    )
+    .subscribe();
 
   window.addEventListener("load", () => {
     // Beri sedikit delay (500ms) agar transisi hilangnya loader terasa halus

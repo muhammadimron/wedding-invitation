@@ -32,8 +32,8 @@
     <div class="messages-list">
       <TransitionGroup name="list-stagger">
         <div
-          v-for="(item, index) in daftarUcapan"
-          :key="item.id || index"
+          v-for="item in daftarUcapan"
+          :key="item.id"
           class="message-card"
         >
           <h4>{{ item.nama }}</h4>

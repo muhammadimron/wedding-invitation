@@ -36,7 +36,7 @@ onMounted(() => {
   const audio = audioPlayer.value;
 
   // 1. ATUR VOLUME MENJADI 50% (0.5)
-  audio.volume = 0.1;
+  audio.volume = 0.5;
 
   // 2. COBA AUTOPLAY (Mungkin diblokir browser!)
   // Karena ini adalah Autoplay yang tidak didahului interaksi, ia akan gagal

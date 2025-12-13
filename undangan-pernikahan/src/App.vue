@@ -82,8 +82,8 @@ const mempelai = {
   lengkapWanita: "Dewi Sri Lestari",
   ayahPria: "Mokhamad Bahrun Triyono",
   ibuPria: "Sri Kamtinah",
-  ayahWanita: "Montague",
-  ibuWanita: "Mrs. Montague",
+  ayahWanita: ".....",
+  ibuWanita: ".....",
   tanggal: "2026-06-18T09:00:00", // Format: YYYY-MM-DDTHH:mm:ss
   akad: {
     tanggal: "Kamis, 18 Juni 2026",
@@ -97,7 +97,7 @@ const mempelai = {
   },
   alamat: {
     namaTempat: "Kediaman Mempelai Akhwat",
-    jalan: "Jl. Cinta Abadi No. 12, RT 05/RW 02",
+    jalan: "Kp. Palalangon, RT 04/RW 06",
     kota: "Nanjungjaya, Kec. Kersamanah, Kabupaten Garut, Jawa Barat 44189",
     gmapsLink: "https://maps.app.goo.gl/H21ue3w9mSJ5tbKS6",
     gmapsLinkEmbed:
@@ -108,7 +108,7 @@ const mempelai = {
     rekening: "0092013176", // Ganti dengan nomor rekening Anda
     atasNama: "Muhammad Imron",
     opsiLain:
-      "Jl. Masjid Raya No. 5, Nanjungjaya, Kec. Kersamanah, Kabupaten Garut, Jawa Barat 44189 (Kotak Kado)", // Alamat pengiriman fisik
+      "Kp. Palalangon, RT 04/RW 06, Nanjungjaya, Kec. Kersamanah, Kabupaten Garut, Jawa Barat 44189 (Kotak Kado)", // Alamat pengiriman fisik
   },
 };
 

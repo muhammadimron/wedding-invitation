@@ -6,7 +6,7 @@
       
       <div class="calendar-wrapper">
         <div class="calendar-header">
-          <h3>JUNI 2026</h3>
+          <h3>MEI 2026</h3>
         </div>
         
         <div class="calendar-grid">
@@ -18,16 +18,16 @@
           <div class="day-name">J</div>
           <div class="day-name">S</div>
   
-          <div class="day-num-disable">31</div>
-          <div v-for="d in 17" :key="d" class="day-num">{{ d }}</div>
+          <div v-for="d in [26, 27, 28, 29, 30]" :key="d" class="day-num-disable">{{ d }}</div>
+          <div v-for="d in 28" :key="d" class="day-num">{{ d }}</div>
           
           <div class="day-num wedding-day">
             <span class="highlight-circle"></span>
-            18
+            29
           </div>
   
-          <div v-for="d in [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]" :key="d" class="day-num">{{ d }}</div>
-          <div v-for="d in 4" :key="'next'+d" class="day-num-disable">{{ d }}</div>
+          <div v-for="d in [30, 31]" :key="d" class="day-num">{{ d }}</div>
+          <div v-for="d in 6" :key="'next'+d" class="day-num-disable">{{ d }}</div>
         </div>
       </div>
 

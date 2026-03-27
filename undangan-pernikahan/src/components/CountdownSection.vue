@@ -19,7 +19,7 @@
         ><small>Detik</small>
       </div>
     </div>
-    <h3 class="date">18 Juni 2026</h3>
+    <h3 class="date">29 Mei 2026</h3>
     <button @click="simpanTanggal" class="btn-save-date">
       Simpan Tanggal ke Kalender
     </button>

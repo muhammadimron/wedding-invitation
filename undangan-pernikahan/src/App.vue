@@ -82,16 +82,16 @@ const mempelai = {
   lengkapWanita: "Dewi Sri Lestari",
   ayahPria: "Mokhamad Bahrun Triyono",
   ibuPria: "Sri Kamtinah",
-  ayahWanita: ".....",
-  ibuWanita: ".....",
-  tanggal: "2026-06-18T09:00:00", // Format: YYYY-MM-DDTHH:mm:ss
+  ayahWanita: "Memed",
+  ibuWanita: "Neneh",
+  tanggal: "2026-05-29T09:00:00", // Format: YYYY-MM-DDTHH:mm:ss
   akad: {
-    tanggal: "Kamis, 18 Juni 2026",
+    tanggal: "Jum'at, 29 Mei 2026",
     waktu: "Pukul 09.00 - 10.00 WIB",
     tempat: "Kediaman Mempelai Akhwat",
   },
   resepsi: {
-    tanggal: "Kamis, 18 Juni 2026",
+    tanggal: "Jum'at, 29 Mei 2026",
     waktu: "Pukul 11.00 - 15.00 WIB",
     tempat: "Kediaman Mempelai Akhwat",
   },
